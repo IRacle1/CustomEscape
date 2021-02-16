@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace BetterEscape
@@ -9,13 +10,16 @@ namespace BetterEscape
         public bool IsEnabled { get; set; } = true;
 
         [Description("Syntax: From Old Role to New Role")]
-        public RoleType fromScientistTo { get; set; } = RoleType.ChaosInsurgency;
-        public RoleType fromChaosTo { get; set; } = RoleType.NtfLieutenant;
-        public RoleType fromCommanderTo { get; set; } = RoleType.ChaosInsurgency;
-        public RoleType fromLieutenantTo { get; set; } = RoleType.ChaosInsurgency;
-        public RoleType fromCadetTo { get; set; } = RoleType.ChaosInsurgency;
-        public RoleType fromGuardTo { get; set; } = RoleType.ChaosInsurgency;
-        public RoleType fromNtfScientistTo { get; set; } = RoleType.ChaosInsurgency;
-        public RoleType fromClassdTo { get; set; } = RoleType.NtfLieutenant;
+        public Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
+        {
+            {RoleType.Scientist, RoleType.ChaosInsurgency },
+            {RoleType.ChaosInsurgency, RoleType.NtfLieutenant },
+            {RoleType.NtfCommander, RoleType.ChaosInsurgency },
+            {RoleType.NtfLieutenant, RoleType.ChaosInsurgency },
+            {RoleType.NtfCadet, RoleType.ChaosInsurgency },
+            {RoleType.FacilityGuard, RoleType.ChaosInsurgency },
+            {RoleType.NtfScientist, RoleType.ChaosInsurgency },
+            {RoleType.ClassD, RoleType.NtfLieutenant }
+        };
     }
 }

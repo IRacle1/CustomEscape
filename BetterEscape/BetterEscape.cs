@@ -1,6 +1,8 @@
 ﻿using Exiled.API.Features;
+using Exiled.Events.EventArgs;
 using System;
 using ServerEvents = Exiled.Events.Handlers.Server;
+using PlayerEvents = Exiled.Events.Handlers.Player;
 
 namespace BetterEscape
 {
@@ -37,12 +39,14 @@ namespace BetterEscape
 		{
 			EventHandler = new EventHandlers();
 
-			ServerEvents.RoundStarted -= EventHandler.OnStart;
+			PlayerEvents.Verified += EventHandler.OnVerified;
+			ServerEvents.EndingRound += EventHandler.EndingRound;
 		}
 
 		private void UnregisterEvents()
 		{
-			ServerEvents.RoundStarted -= EventHandler.OnStart;
+			PlayerEvents.Verified -= EventHandler.OnVerified;
+			ServerEvents.EndingRound -= EventHandler.EndingRound;
 
 			EventHandler = null;
 		}
@@ -50,13 +54,13 @@ namespace BetterEscape
 
 	public class EventHandlers
     {
-		public void OnStart()
+		public void OnVerified(VerifiedEventArgs ev)
         {
-			foreach (Player pl in Player.List)
-				pl.GameObject.AddComponent<BetterEscapeComponent>();
-        }
+			ev.Player.GameObject.AddComponent<BetterEscapeComponent>();
+			Log.Debug("BetterComponent");
+		}
 
-		public void EndingRound()
+		public void EndingRound(EndingRoundEventArgs ev)
         {
 			foreach (Player pl in Player.List)
 				if (pl.GameObject.TryGetComponent(out BetterEscapeComponent betterEscape))
