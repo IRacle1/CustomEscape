@@ -28,7 +28,7 @@ namespace BetterEscape
         {
             foreach (Player pl in Player.List)
             {
-                if (Vector3.Distance(pl.Position, escapePos) <= 5)
+                if (Vector3.Distance(pl.Position, escapePos) <= 5 && pl.IsCuffed)
                 {
                     if (pl.Role == RoleType.ChaosInsurgency)
                         Timing.CallDelayed(0.01f, () => pl.Role = BetterEscape.singleton.Config.ChaosInsurgencyTo);
