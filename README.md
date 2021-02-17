@@ -10,12 +10,12 @@ Too lazy to make a tab. Enjoy.
         [Description("Syntax: From Old Role to New Role")]
         public Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
         {
-            {RoleType.Scientist, RoleType.ChaosInsurgency },
-            {RoleType.ChaosInsurgency, RoleType.NtfLieutenant },
-            {RoleType.NtfCommander, RoleType.ChaosInsurgency },
-            {RoleType.NtfLieutenant, RoleType.ChaosInsurgency },
-            {RoleType.NtfCadet, RoleType.ChaosInsurgency },
-            {RoleType.FacilityGuard, RoleType.ChaosInsurgency },
-            {RoleType.NtfScientist, RoleType.ChaosInsurgency },
-            {RoleType.ClassD, RoleType.NtfLieutenant }
+            { RoleType.Scientist, RoleType.ChaosInsurgency },
+            { RoleType.ChaosInsurgency, RoleType.NtfLieutenant },
+            { RoleType.NtfCommander, RoleType.ChaosInsurgency },
+            { RoleType.NtfLieutenant, RoleType.ChaosInsurgency },
+            { RoleType.NtfCadet, RoleType.ChaosInsurgency },
+            { RoleType.FacilityGuard, RoleType.ChaosInsurgency },
+            { RoleType.NtfScientist, RoleType.ChaosInsurgency },
+            { RoleType.ClassD, RoleType.NtfLieutenant }
         };
