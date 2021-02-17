@@ -67,11 +67,7 @@ namespace BetterEscape
 			{ RoleType.ClassD, BetterEscape.singleton.Config.ClassDTo }
 		};
 
-		public void OnVerified(VerifiedEventArgs ev)
-        {
-			ev.Player.GameObject.AddComponent<BetterEscapeComponent>();
-			Log.Debug("BetterComponent");
-		}
+		public void OnVerified(VerifiedEventArgs ev) => ev.Player.GameObject.AddComponent<BetterEscapeComponent>();
 
 		public void EndingRound(EndingRoundEventArgs ev)
         {
