@@ -30,7 +30,6 @@ namespace BetterEscape
             {
                 if (Vector3.Distance(pl.Position, escapePos) <= 5)
                 {
-                    Log.Debug("ok");
                     if (pl.Role == RoleType.ChaosInsurgency)
                         Timing.CallDelayed(0.01f, () => pl.Role = BetterEscape.singleton.Config.ChaosInsurgencyTo);
 
