@@ -1,21 +1,26 @@
 # BetterEscape
-You can manage a **Player**'s **Role** when he **Escapes** from the **Facility**.
+You can manage the **Players**' **Role** when they **Escape** from the **Facility**.
 
 ## Configs
-Too lazy to make a tab. Enjoy.
 
-        [Description("Enables BetterEscape")]
-        public bool IsEnabled { get; set; } = true;
-
-        [Description("Syntax: From Old Role to New Role")]
-        public Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
-        {
-            { RoleType.Scientist, RoleType.ChaosInsurgency },
-            { RoleType.ChaosInsurgency, RoleType.NtfLieutenant },
-            { RoleType.NtfCommander, RoleType.ChaosInsurgency },
-            { RoleType.NtfLieutenant, RoleType.ChaosInsurgency },
-            { RoleType.NtfCadet, RoleType.ChaosInsurgency },
-            { RoleType.FacilityGuard, RoleType.ChaosInsurgency },
-            { RoleType.NtfScientist, RoleType.ChaosInsurgency },
-            { RoleType.ClassD, RoleType.NtfLieutenant }
-        };
+```yaml
+BetterEscape:
+  Enables BetterEscape
+  is_enabled: true
+  # What should a Scientist become?
+  scientist_to: ChaosInsurgency
+  # What should a ChaosInsurgency become?
+  chaos_insurgency_to: NtfLieutenant
+  # What should a NtfCommander become?
+  ntf_commander_to: ChaosInsurgency
+  # What should a NtfLieutenant become?
+  ntf_lieutenant_to: ChaosInsurgency
+  # What should a NtfCadet become?
+  ntf_cadet_to: ChaosInsurgency
+  # What should a NtfScientist become?
+  ntf_scientist_to: ChaosInsurgency
+  # What should a FacilityGuard become?
+  facility_guard_to: ChaosInsurgency
+  # What should a ClassD become?
+  class_d_to: NtfLieutenant
+```
