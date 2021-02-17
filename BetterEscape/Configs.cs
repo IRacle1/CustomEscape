@@ -13,7 +13,7 @@ namespace BetterEscape
         public RoleType ScientistTo { get; set; } = RoleType.ChaosInsurgency;
 
         [Description("What should a ChaosInsurgency become?")]
-        public RoleType ChaosInsurgencyTo { get; set; } = RoleType.NtfLieutenant;
+        public RoleType ChaosInsurgencyTo { get; set; } = RoleType.NtfCadet;
 
         [Description("What should a NtfCommander become?")]
         public RoleType NtfCommanderTo { get; set; } = RoleType.ChaosInsurgency;

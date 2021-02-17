@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs;
+using MEC;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,18 +9,36 @@ namespace BetterEscape
 {
     public class BetterEscapeComponent : MonoBehaviour
     {
-        public Player ply { get; private set; }
+        //public Player ply { get; private set; }
+        
         private Vector3 escapePos = new Vector3(170, 984, 26);
 
-        public void Awake() => ply = Player.Get(gameObject);
+        public Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
+        {
+            { RoleType.Scientist, BetterEscape.singleton.Config.ScientistTo },
+            { RoleType.NtfCommander, BetterEscape.singleton.Config.NtfCommanderTo },
+            { RoleType.NtfLieutenant, BetterEscape.singleton.Config.NtfLieutenantTo },
+            { RoleType.NtfCadet, BetterEscape.singleton.Config.NtfCadetTo },
+            { RoleType.FacilityGuard, BetterEscape.singleton.Config.FacilityGuardTo },
+            { RoleType.NtfScientist, BetterEscape.singleton.Config.NtfScientistTo },
+            { RoleType.ClassD, BetterEscape.singleton.Config.ClassDTo }
+        };
+        
         public void Update()
         {
-            if (ply.Team != Team.RIP && ply.Team != Team.SCP)
-                if (ply.IsCuffed)
-                    if (ply.Position == escapePos || Vector3.Distance(ply.Position, escapePos) <= 5)
-                        foreach (KeyValuePair<RoleType, RoleType> kvp in EventHandlers.RoleConversions)
-                            if (ply.Role == kvp.Key)
-                                ply.Role = kvp.Value;
+            foreach (Player pl in Player.List)
+            {
+                if (Vector3.Distance(pl.Position, escapePos) <= 5)
+                {
+                    Log.Debug("ok");
+                    if (pl.Role == RoleType.ChaosInsurgency)
+                        Timing.CallDelayed(0.01f, () => pl.Role = BetterEscape.singleton.Config.ChaosInsurgencyTo);
+
+                    foreach (KeyValuePair<RoleType, RoleType> kvp in RoleConversions)
+                        if (kvp.Key == pl.Role)
+                            pl.Role = kvp.Value;
+                }
+            }                 
         }
 
         public void Destroy()

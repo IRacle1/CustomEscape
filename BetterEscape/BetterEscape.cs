@@ -12,10 +12,10 @@ namespace BetterEscape
 		public override string Author { get; } = "Tomorii";
 		public override string Name { get; } = "BetterEscape";
 		public override string Prefix { get; } = "BetterEscape";
-		public override Version Version { get; } = new Version(1, 1, 1);
+		public override Version Version { get; } = new Version(1, 1, 2);
 		public override Version RequiredExiledVersion { get; } = new Version(2, 1, 34);
 
-		public EventHandlers EventHandler { get; set; }
+		public EventHandlers EventHandlers { get; set; }
 
 		public static BetterEscape singleton;
 
@@ -38,35 +38,25 @@ namespace BetterEscape
 
         private void RegisterEvents()
 		{
-			EventHandler = new EventHandlers();
+			EventHandlers = new EventHandlers();
 
-			PlayerEvents.Verified += EventHandler.OnVerified;
-			ServerEvents.EndingRound += EventHandler.EndingRound;
+			PlayerEvents.Verified += EventHandlers.OnVerified;
+			PlayerEvents.Left += EventHandlers.OnLeft;
+			ServerEvents.EndingRound += EventHandlers.EndingRound;
 		}
 
 		private void UnregisterEvents()
 		{
-			PlayerEvents.Verified -= EventHandler.OnVerified;
-			ServerEvents.EndingRound -= EventHandler.EndingRound;
+			PlayerEvents.Verified -= EventHandlers.OnVerified;
+			PlayerEvents.Left -= EventHandlers.OnLeft;
+			ServerEvents.EndingRound -= EventHandlers.EndingRound;
 
-			EventHandler = null;
+			EventHandlers = null;
 		}
 	}
 
 	public class EventHandlers
-    {
-		public static Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
-		{
-			{ RoleType.Scientist, BetterEscape.singleton.Config.ScientistTo },
-			{ RoleType.ChaosInsurgency, BetterEscape.singleton.Config.ChaosInsurgencyTo },
-			{ RoleType.NtfCommander, BetterEscape.singleton.Config.NtfCommanderTo },
-			{ RoleType.NtfLieutenant, BetterEscape.singleton.Config.NtfLieutenantTo },
-			{ RoleType.NtfCadet, BetterEscape.singleton.Config.NtfCadetTo },
-			{ RoleType.FacilityGuard, BetterEscape.singleton.Config.FacilityGuardTo },
-			{ RoleType.NtfScientist, BetterEscape.singleton.Config.NtfScientistTo },
-			{ RoleType.ClassD, BetterEscape.singleton.Config.ClassDTo }
-		};
-
+    {		
 		public void OnVerified(VerifiedEventArgs ev) => ev.Player.GameObject.AddComponent<BetterEscapeComponent>();
 
 		public void EndingRound(EndingRoundEventArgs ev)
@@ -75,5 +65,11 @@ namespace BetterEscape
 				if (pl.GameObject.TryGetComponent(out BetterEscapeComponent betterEscape))
 					betterEscape.Destroy();
         }
+
+		public void OnLeft(LeftEventArgs ev)
+        {
+			if (ev.Player.GameObject.TryGetComponent(out BetterEscapeComponent betterEscape))
+				betterEscape.Destroy();
+		}
     } 
 }
