@@ -1,5 +1,5 @@
 # BetterEscape
-You can manage the **Players**' **Role** when they **Escape** from the **Facility**.
+You can manage the **Players**' **Role** when they **Escape** from the **Facility** and they're **Cuffed**.
 
 ## Configs
 
