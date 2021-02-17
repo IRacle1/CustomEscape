@@ -9,17 +9,28 @@ namespace BetterEscape
         [Description("Enables BetterEscape")]
         public bool IsEnabled { get; set; } = true;
 
-        [Description("Syntax: From Old Role to New Role")]
-        public Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
-        {
-            {RoleType.Scientist, RoleType.ChaosInsurgency },
-            {RoleType.ChaosInsurgency, RoleType.NtfLieutenant },
-            {RoleType.NtfCommander, RoleType.ChaosInsurgency },
-            {RoleType.NtfLieutenant, RoleType.ChaosInsurgency },
-            {RoleType.NtfCadet, RoleType.ChaosInsurgency },
-            {RoleType.FacilityGuard, RoleType.ChaosInsurgency },
-            {RoleType.NtfScientist, RoleType.ChaosInsurgency },
-            {RoleType.ClassD, RoleType.NtfLieutenant }
-        };
+        [Description("What should a Scientist become?")]
+        public RoleType ScientistTo { get; set; } = RoleType.ChaosInsurgency;
+
+        [Description("What should a ChaosInsurgency become?")]
+        public RoleType ChaosInsurgencyTo { get; set; } = RoleType.NtfLieutenant;
+
+        [Description("What should a NtfCommander become?")]
+        public RoleType NtfCommanderTo { get; set; } = RoleType.ChaosInsurgency;
+
+        [Description("What should a NtfLieutenant become?")]
+        public RoleType NtfLieutenantTo { get; set; } = RoleType.ChaosInsurgency;
+
+        [Description("What should a NtfCadet become?")]
+        public RoleType NtfCadetTo { get; set; } = RoleType.ChaosInsurgency;
+
+        [Description("What should a NtfScientist become?")]
+        public RoleType NtfScientistTo { get; set; } = RoleType.ChaosInsurgency;
+
+        [Description("What should a FacilityGuard become?")]
+        public RoleType FacilityGuardTo { get; set; } = RoleType.ChaosInsurgency;
+
+        [Description("What should a ClassD become?")]
+        public RoleType ClassDTo { get; set; } = RoleType.NtfLieutenant;
     }
 }

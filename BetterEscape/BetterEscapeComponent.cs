@@ -17,7 +17,7 @@ namespace BetterEscape
             if (ply.Team != Team.RIP && ply.Team != Team.SCP)
                 if (ply.IsCuffed)
                     if (ply.Position == escapePos || Vector3.Distance(ply.Position, escapePos) <= 5)
-                        foreach (KeyValuePair<RoleType, RoleType> kvp in BetterEscape.singleton.Config.RoleConversions)
+                        foreach (KeyValuePair<RoleType, RoleType> kvp in EventHandlers.RoleConversions)
                             if (ply.Role == kvp.Key)
                                 ply.Role = kvp.Value;
         }

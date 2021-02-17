@@ -3,6 +3,7 @@ using Exiled.Events.EventArgs;
 using System;
 using ServerEvents = Exiled.Events.Handlers.Server;
 using PlayerEvents = Exiled.Events.Handlers.Player;
+using System.Collections.Generic;
 
 namespace BetterEscape
 {
@@ -54,6 +55,18 @@ namespace BetterEscape
 
 	public class EventHandlers
     {
+		public static Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
+		{
+			{ RoleType.Scientist, BetterEscape.singleton.Config.ScientistTo },
+			{ RoleType.ChaosInsurgency, BetterEscape.singleton.Config.ChaosInsurgencyTo },
+			{ RoleType.NtfCommander, BetterEscape.singleton.Config.NtfCommanderTo },
+			{ RoleType.NtfLieutenant, BetterEscape.singleton.Config.NtfLieutenantTo },
+			{ RoleType.NtfCadet, BetterEscape.singleton.Config.NtfCadetTo },
+			{ RoleType.FacilityGuard, BetterEscape.singleton.Config.FacilityGuardTo },
+			{ RoleType.NtfScientist, BetterEscape.singleton.Config.NtfScientistTo },
+			{ RoleType.ClassD, BetterEscape.singleton.Config.ClassDTo }
+		};
+
 		public void OnVerified(VerifiedEventArgs ev)
         {
 			ev.Player.GameObject.AddComponent<BetterEscapeComponent>();
