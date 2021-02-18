@@ -4,6 +4,8 @@ using System;
 using ServerEvents = Exiled.Events.Handlers.Server;
 using PlayerEvents = Exiled.Events.Handlers.Player;
 using System.Collections.Generic;
+using UnityEngine;
+using MEC;
 
 namespace BetterEscape
 {
@@ -56,7 +58,8 @@ namespace BetterEscape
 	}
 
 	public class EventHandlers
-    {		
+    {
+		private CoroutineHandle coroutine = new CoroutineHandle();
 		public void OnVerified(VerifiedEventArgs ev) => ev.Player.GameObject.AddComponent<BetterEscapeComponent>();
 
 		public void EndingRound(EndingRoundEventArgs ev)
@@ -64,6 +67,8 @@ namespace BetterEscape
 			foreach (Player pl in Player.List)
 				if (pl.GameObject.TryGetComponent(out BetterEscapeComponent betterEscape))
 					betterEscape.Destroy();
+
+			Timing.KillCoroutines(coroutine);
         }
 
 		public void OnLeft(LeftEventArgs ev)
@@ -71,5 +76,18 @@ namespace BetterEscape
 			if (ev.Player.GameObject.TryGetComponent(out BetterEscapeComponent betterEscape))
 				betterEscape.Destroy();
 		}
-    } 
+
+		private static Vector3 escapePos = new Vector3(170, 984, 26);
+
+		public Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
+		{
+			{ RoleType.Scientist, BetterEscape.singleton.Config.ScientistTo },
+			{ RoleType.NtfCommander, BetterEscape.singleton.Config.NtfCommanderTo },
+			{ RoleType.NtfLieutenant, BetterEscape.singleton.Config.NtfLieutenantTo },
+			{ RoleType.NtfCadet, BetterEscape.singleton.Config.NtfCadetTo },
+			{ RoleType.FacilityGuard, BetterEscape.singleton.Config.FacilityGuardTo },
+			{ RoleType.NtfScientist, BetterEscape.singleton.Config.NtfScientistTo },
+			{ RoleType.ClassD, BetterEscape.singleton.Config.ClassDTo }
+		};	
+	} 
 }
