@@ -15,16 +15,7 @@ namespace BetterEscape
         
         private Vector3 escapePos = new Vector3(170, 984, 26);
 
-        public Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
-        {
-            { RoleType.Scientist, BetterEscape.singleton.Config.ScientistTo },
-            { RoleType.NtfCommander, BetterEscape.singleton.Config.NtfCommanderTo },
-            { RoleType.NtfLieutenant, BetterEscape.singleton.Config.NtfLieutenantTo },
-            { RoleType.NtfCadet, BetterEscape.singleton.Config.NtfCadetTo },
-            { RoleType.FacilityGuard, BetterEscape.singleton.Config.FacilityGuardTo },
-            { RoleType.NtfScientist, BetterEscape.singleton.Config.NtfScientistTo },
-            { RoleType.ClassD, BetterEscape.singleton.Config.ClassDTo }
-        };
+        public Dictionary<RoleType, List<RoleType>> RoleConversions = BetterEscape.singleton.Config.RoleConversions;
 
         public void Awake()
         {
@@ -36,12 +27,9 @@ namespace BetterEscape
         {
             if (Vector3.Distance(ply.Position, escapePos) <= 2)
             {
-                if (ply.Role == RoleType.ChaosInsurgency)
-                    Timing.CallDelayed(0.01f, () => ply.Role = BetterEscape.singleton.Config.ChaosInsurgencyTo);
-
-                foreach (KeyValuePair<RoleType, RoleType> kvp in RoleConversions)
+                foreach (KeyValuePair<RoleType, List<RoleType>> kvp in RoleConversions)
                     if (kvp.Key == ply.Role)
-                        Timing.CallDelayed(0.01f, () => ply.Role = kvp.Value);
+                        Timing.CallDelayed(0.01f, () => ply.Role = ply.IsCuffed ? kvp.Value[0] : kvp.Value[1]);
             }
         }
 

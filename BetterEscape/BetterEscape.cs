@@ -24,7 +24,7 @@ namespace BetterEscape
 		public override void OnEnabled()
 		{
 			singleton = this;
-			RegisterEvents();
+			if (ParseConfig()) RegisterEvents();
 			Log.Info("BetterEscape Loaded!");
 
 			base.OnEnabled();
@@ -55,6 +55,14 @@ namespace BetterEscape
 
 			EventHandlers = null;
 		}
+		private bool ParseConfig()
+		{
+			Dictionary<RoleType, List<RoleType>> dict = Config.RoleConversions;
+			foreach (KeyValuePair<RoleType, List<RoleType>> kvp in dict)
+			{
+				if (kvp.Value.Count != 2) return true;
+			}
+		}
 	}
 
 	public class EventHandlers
@@ -78,16 +86,5 @@ namespace BetterEscape
 		}
 
 		private static Vector3 escapePos = new Vector3(170, 984, 26);
-
-		public Dictionary<RoleType, RoleType> RoleConversions = new Dictionary<RoleType, RoleType>()
-		{
-			{ RoleType.Scientist, BetterEscape.singleton.Config.ScientistTo },
-			{ RoleType.NtfCommander, BetterEscape.singleton.Config.NtfCommanderTo },
-			{ RoleType.NtfLieutenant, BetterEscape.singleton.Config.NtfLieutenantTo },
-			{ RoleType.NtfCadet, BetterEscape.singleton.Config.NtfCadetTo },
-			{ RoleType.FacilityGuard, BetterEscape.singleton.Config.FacilityGuardTo },
-			{ RoleType.NtfScientist, BetterEscape.singleton.Config.NtfScientistTo },
-			{ RoleType.ClassD, BetterEscape.singleton.Config.ClassDTo }
-		};	
 	} 
 }
