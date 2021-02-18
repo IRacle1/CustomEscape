@@ -14,7 +14,7 @@ namespace BetterEscape
 		public override string Author { get; } = "Tomorii";
 		public override string Name { get; } = "BetterEscape";
 		public override string Prefix { get; } = "BetterEscape";
-		public override Version Version { get; } = new Version(1, 1, 2);
+		public override Version Version { get; } = new Version(1, 1, 3);
 		public override Version RequiredExiledVersion { get; } = new Version(2, 1, 34);
 
 		public EventHandlers EventHandlers { get; set; }
