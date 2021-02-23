@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Interfaces;
+using Exiled.API.Features;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -7,7 +8,7 @@ namespace BetterEscape
     public class Configs : IConfig
     {
         [Description("Enables BetterEscape")]
-        public bool IsEnabled { get; set; } = true;
+        public bool IsEnabled { get; set; } = false;
 
         // [Description("What should a Scientist become?")]
         // public RoleType ScientistTo { get; set; } = RoleType.ChaosInsurgency;
@@ -32,10 +33,28 @@ namespace BetterEscape
 
         // [Description("What should a ClassD become?")]
         // public RoleType ClassDTo { get; set; } = RoleType.NtfLieutenant;
-        [Description("Dictionary. WHO - WHO WITH CUFFS - WHO WITHOUT CUFFS")]
-        public Dictionary<RoleType, List<RoleType>> RoleConversions = new Dictionary<RoleType, List<RoleType>>() {
+        /*[Description("RoleType to convert from\n#    - RoleType to convert to with cuffs\n#    - RoleType to convert to without cuffs")]
+        public Dictionary<RoleType, List<RoleType>> RoleConversions { get; set; } = new Dictionary<RoleType, List<RoleType>>() {
             {RoleType.FacilityGuard, new List<RoleType>(){RoleType.ChaosInsurgency, RoleType.NtfLieutenant}},
-            {RoleType.Scientist, new List<RoleType>(){RoleType.ChaosInsurgency, RoleType.NtfScientist}}
+            {RoleType.Scientist, new List<RoleType>(){RoleType.ChaosInsurgency, RoleType.NtfScientist}},
+            {RoleType.ChaosInsurgency, new List<RoleType>(){RoleType.NtfCadet, RoleType.None}},
+            {RoleType.ClassD, new List<RoleType>(){RoleType.NtfCadet, RoleType.ChaosInsurgency}}
+        };*/
+        [Description("Self-explanatory. Wrong configs will lead to role changing to Scp173. You can pass None to not change role")]
+        public Dictionary<RoleType, MyRoleParser> RoleConversions { get; set; } = new Dictionary<RoleType, MyRoleParser>()
+        {
+            {RoleType.FacilityGuard, new MyRoleParser{CuffedRole = RoleType.ChaosInsurgency, UncuffedRole = RoleType.NtfLieutenant} },
+            {RoleType.Scientist, new MyRoleParser{CuffedRole = RoleType.ChaosInsurgency, UncuffedRole = RoleType.NtfScientist} }
         };
+        public bool Debug { get; set; } = false;
+    }
+    public class MyRoleParser
+    {
+        public MyRoleParser()
+        {
+            Log.Info($"Created a parser: {CuffedRole}, {UncuffedRole}");
+        }
+        public RoleType CuffedRole { get; set; } = RoleType.ChaosInsurgency;
+        public RoleType UncuffedRole { get; set; } = RoleType.NtfCadet;
     }
 }

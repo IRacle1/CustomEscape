@@ -11,57 +11,42 @@ namespace BetterEscape
 {
     public class BetterEscape : Plugin<Configs>
     {
-		public override string Author { get; } = "Tomorii";
-		public override string Name { get; } = "BetterEscape";
-		public override string Prefix { get; } = "BetterEscape";
-		public override Version Version { get; } = new Version(1, 1, 3);
+		public override string Author { get; } = "Remindme";
+		public override string Name { get; } = "Better Escape";
+		public override string Prefix { get; } = "bEscape";
+		public override Version Version { get; } = new Version(2, 0, 0);
 		public override Version RequiredExiledVersion { get; } = new Version(2, 1, 34);
 
-		public EventHandlers EventHandlers { get; set; }
+		private EventHandlers EventHandlers { get; set; }
 
 		public static BetterEscape singleton;
 
 		public override void OnEnabled()
 		{
 			singleton = this;
-			if (ParseConfig()) RegisterEvents();
-			Log.Info("BetterEscape Loaded!");
+
+			EventHandlers = new EventHandlers();
+
+			PlayerEvents.Verified += EventHandlers.OnVerified;
+			PlayerEvents.Left += EventHandlers.OnLeft;
+			PlayerEvents.ChangingRole += EventHandlers.OnChangingRole;
+			ServerEvents.EndingRound += EventHandlers.EndingRound;
 
 			base.OnEnabled();
 		}
 
 		public override void OnDisabled()
 		{
-			UnregisterEvents();
-			Log.Info("BetterEscape Disabled!");
-
-			base.OnDisabled();
-		}
-
-        private void RegisterEvents()
-		{
-			EventHandlers = new EventHandlers();
-
-			PlayerEvents.Verified += EventHandlers.OnVerified;
-			PlayerEvents.Left += EventHandlers.OnLeft;
-			ServerEvents.EndingRound += EventHandlers.EndingRound;
-		}
-
-		private void UnregisterEvents()
-		{
 			PlayerEvents.Verified -= EventHandlers.OnVerified;
 			PlayerEvents.Left -= EventHandlers.OnLeft;
+			PlayerEvents.ChangingRole -= EventHandlers.OnChangingRole;
 			ServerEvents.EndingRound -= EventHandlers.EndingRound;
 
 			EventHandlers = null;
-		}
-		private bool ParseConfig()
-		{
-			Dictionary<RoleType, List<RoleType>> dict = Config.RoleConversions;
-			foreach (KeyValuePair<RoleType, List<RoleType>> kvp in dict)
-			{
-				if (kvp.Value.Count != 2) return true;
-			}
+
+			singleton = null;
+
+			base.OnDisabled();
 		}
 	}
 
@@ -85,6 +70,13 @@ namespace BetterEscape
 				betterEscape.Destroy();
 		}
 
-		private static Vector3 escapePos = new Vector3(170, 984, 26);
+		public void OnChangingRole(ChangingRoleEventArgs ev)
+		{
+			if (!ev.IsEscaped) return;
+			foreach (KeyValuePair<RoleType, MyRoleParser> kvp in BetterEscape.singleton.Config.RoleConversions)
+			{
+				if(ev.Player.Role == kvp.Key) Timing.CallDelayed(0.1f, () => ev.NewRole = ev.Player.IsCuffed ? kvp.Value.CuffedRole : kvp.Value.UncuffedRole);
+			}
+		}
 	} 
 }

@@ -1,5 +1,4 @@
 ﻿using Exiled.API.Features;
-using Exiled.Events.EventArgs;
 using MEC;
 using System;
 using System.Collections.Generic;
@@ -7,33 +6,42 @@ using UnityEngine;
 
 namespace BetterEscape
 {
-    
+
     public class BetterEscapeComponent : MonoBehaviour
     {
-        public Player ply { get; private set; }
-        //private bool IsCuffed = false;
-        
-        private Vector3 escapePos = new Vector3(170, 984, 26);
+        private Player Ply { get; set; }
 
-        public Dictionary<RoleType, List<RoleType>> RoleConversions = BetterEscape.singleton.Config.RoleConversions;
+        private Vector3 EscapePos { get; set; }
+
+        private Dictionary<RoleType, MyRoleParser> RoleConversions { get; set; } = BetterEscape.singleton.Config.RoleConversions;
+        private bool Debug { get; set; } = BetterEscape.singleton.Config.Debug;
 
         public void Awake()
         {
-            //Load();
-            ply = Player.Get(gameObject);
-        }
-        
-        public void Update()
-        {
-            if (Vector3.Distance(ply.Position, escapePos) <= 2)
-            {
-                foreach (KeyValuePair<RoleType, List<RoleType>> kvp in RoleConversions)
-                    if (kvp.Key == ply.Role)
-                        Timing.CallDelayed(0.01f, () => ply.Role = ply.IsCuffed ? kvp.Value[0] : kvp.Value[1]);
-            }
+            Ply = Player.Get(gameObject);
+            Log.Debug($"Attached a component to {Ply.Nickname}", Debug);
+            EscapePos = Ply.GameObject.GetComponent<Escape>().worldPosition;
+            Log.Debug($"Acquired an escapePos: {EscapePos.x}, {EscapePos.y}, {EscapePos.z}", Debug);
         }
 
-        //public void OnDestroy() => Unload();
+        public void Update()
+        {
+            if (Ply.Role == RoleType.ClassD || Ply.Role == RoleType.Scientist) return;
+            if (Vector3.Distance(Ply.Position, EscapePos) > 2) return;
+
+            foreach (KeyValuePair<RoleType, MyRoleParser> kvp in RoleConversions)
+            {
+                if (kvp.Key == Ply.Role)
+                {
+                    RoleType role = Ply.IsCuffed ? kvp.Value.CuffedRole : kvp.Value.UncuffedRole;
+                    Log.Debug($"update: {role}", Debug);
+                    if (role != RoleType.None)
+                    {
+                        Timing.CallDelayed(0.01f, () => Ply.SetRole(role, false, true));
+                    }
+                }
+            }
+        }
 
         public void Destroy()
         {
@@ -45,32 +53,7 @@ namespace BetterEscape
             {
                 Log.Error($"Can't Destroy: {e}");
             }
-        }  
-        /*
-        public void OnCuff(HandcuffingEventArgs ev)
-        {
-            if (ev.Target == ply)
-                IsCuffed = true;
         }
-
-        public void OnRemoveCuff(RemovingHandcuffsEventArgs ev)
-        {
-            if (ev.Target == ply)
-                IsCuffed = false;
-        }
-
-        private void Load()
-        {
-            Exiled.Events.Handlers.Player.Handcuffing += OnCuff;
-            Exiled.Events.Handlers.Player.RemovingHandcuffs += OnRemoveCuff;
-        }
-
-        private void Unload()
-        {
-            Exiled.Events.Handlers.Player.Handcuffing += OnCuff;
-            Exiled.Events.Handlers.Player.RemovingHandcuffs += OnRemoveCuff;
-        }
-        */
     }
-    
+
 }
