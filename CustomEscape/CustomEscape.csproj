@@ -7,8 +7,8 @@
     <ProjectGuid>{1FED1E3D-8BDC-4DEB-A363-2BB60F215AAC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BetterEscape</RootNamespace>
-    <AssemblyName>BetterEscape</AssemblyName>
+    <RootNamespace>CustomEscape</RootNamespace>
+    <AssemblyName>CustomEscape</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

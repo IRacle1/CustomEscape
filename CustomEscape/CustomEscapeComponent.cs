@@ -10,7 +10,7 @@ namespace CustomEscape
     {
         private Player Ply { get; set; }
 
-        private Vector3 escapePos = new Vector3(170, 984, 26);
+        private Vector3 EscapePos { get; set; } = new Vector3(170, 984, 26);
 
         private bool Debug { get; set; } = CustomEscape.singleton.Config.Debug;
 
@@ -22,13 +22,13 @@ namespace CustomEscape
         public void Update()
         {
             if (Ply.Role == RoleType.ClassD || Ply.Role == RoleType.Scientist) return;
-            if (Vector3.Distance(Ply.Position, escapePos) > 2) return;
+            if (Vector3.Distance(Ply.Position, EscapePos) > 2) return;
 
             Log.Debug($"update:{Ply.Role}, IsCuffed:{Ply.IsCuffed}", Debug);
 
             Timing.CallDelayed(0.01f, () => Ply.SetRole(Ply.Role, false, true));
 
-            this.Destroy();
+            Destroy();
             Timing.CallDelayed(1f, () =>
             {
                 Ply.GameObject.AddComponent<CustomEscapeComponent>();
