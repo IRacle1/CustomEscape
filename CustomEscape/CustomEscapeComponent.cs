@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace CustomEscape
 {
-
     public class CustomEscapeComponent : MonoBehaviour
     {
         private Player Ply { get; set; }
