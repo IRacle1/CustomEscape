@@ -4,6 +4,8 @@ using System;
 using ServerEvents = Exiled.Events.Handlers.Server;
 using PlayerEvents = Exiled.Events.Handlers.Player;
 using System.Collections.Generic;
+using UnityEngine;
+using MEC;
 
 namespace BetterEscape
 {
@@ -49,6 +51,7 @@ namespace BetterEscape
 	}
 	public class EventHandlers
     {
+		private CoroutineHandle coroutine = new CoroutineHandle();
 		public void OnVerified(VerifiedEventArgs ev)
 		{
 			ev.Player.GameObject.AddComponent<BetterEscapeComponent>();
@@ -64,6 +67,7 @@ namespace BetterEscape
 					Log.Debug($"destroyed: {pl.Nickname}", BetterEscape.singleton.Config.Debug);
 				}
 			}
+			Timing.KillCoroutines(coroutine);
 		}
 		public void OnLeft(LeftEventArgs ev)
 		{
