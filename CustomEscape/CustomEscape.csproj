@@ -82,6 +82,7 @@
     <Compile Include="Configs.cs" />
     <Compile Include="CustomEscapeComponent.cs" />
     <Compile Include="CustomEscape.cs" />
+    <Compile Include="EventHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
