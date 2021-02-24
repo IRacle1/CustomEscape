@@ -1,9 +1,7 @@
 ﻿using Exiled.API.Features;
 using MEC;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
 namespace BetterEscape
 {
