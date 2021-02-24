@@ -1,4 +1,4 @@
-# BetterEscape
+# CustomEscape
 
 Plugin to ultimately manage all of the Roles that Players get when they escape the facility, having roles for if they are either cuffed or not.
 
@@ -12,9 +12,10 @@ Configs are actually very easy to do. You can find all the `RoleType`s under the
 
 ```yaml
 bEscape:
+# Enables BetterEscape
   is_enabled: true
-  # Self-explanatory. Wrong configs will lead to role changing to Scp173. You can pass None to not change the role at all. Make sure you follow the example formatting.
-  RoleConversions:
+  # Self-explanatory. Wrong configs will lead to role changing to Scp173. You can pass None to not change role. Make sure you follow the example formatting or it *can* possibly break
+  role_conversions:
     FacilityGuard:
       cuffed_role: ChaosInsurgency
       uncuffed_role: NtfLieutenant

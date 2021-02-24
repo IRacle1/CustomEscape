@@ -3,16 +3,16 @@ using MEC;
 using System;
 using UnityEngine;
 
-namespace BetterEscape
+namespace CustomEscape
 {
 
-    public class BetterEscapeComponent : MonoBehaviour
+    public class CustomEscapeComponent : MonoBehaviour
     {
         private Player Ply { get; set; }
 
         private Vector3 escapePos = new Vector3(170, 984, 26);
 
-        private bool Debug { get; set; } = BetterEscape.singleton.Config.Debug;
+        private bool Debug { get; set; } = CustomEscape.singleton.Config.Debug;
 
         public void Awake()
         {
@@ -31,7 +31,7 @@ namespace BetterEscape
             this.Destroy();
             Timing.CallDelayed(1f, () =>
             {
-                Ply.GameObject.AddComponent<BetterEscapeComponent>();
+                Ply.GameObject.AddComponent<CustomEscapeComponent>();
                 Log.Debug($"reattached:{Ply.Nickname}", Debug);
             });
         }

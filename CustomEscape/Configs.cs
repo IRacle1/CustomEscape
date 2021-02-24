@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace BetterEscape
+namespace CustomEscape
 {
     public class Configs : IConfig
     {
-        [Description("Enables BetterEscape")]
+        [Description("Enables Custom Escape")]
         public bool IsEnabled { get; set; } = true;
 
         // [Description("What should a Scientist become?")]
