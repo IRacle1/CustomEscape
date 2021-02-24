@@ -14,7 +14,6 @@ namespace BetterEscape
 
         private Vector3 escapePos = new Vector3(170, 984, 26);
 
-        private Dictionary<RoleType, PrettyCuffedConfig> RoleConversions { get; set; } = BetterEscape.singleton.Config.RoleConversions;
         private bool Debug { get; set; } = BetterEscape.singleton.Config.Debug;
 
         public void Awake()
