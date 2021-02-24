@@ -14,7 +14,7 @@ namespace BetterEscape
 		public override string Author { get; } = "Remindme";
 		public override string Name { get; } = "Better Escape";
 		public override string Prefix { get; } = "bEscape";
-		public override Version Version { get; } = new Version(2, 1, 1);
+		public override Version Version { get; } = new Version(2, 2, 0);
 		public override Version RequiredExiledVersion { get; } = new Version(2, 1, 34);
 
 		private EventHandlers EventHandlers { get; set; }
@@ -97,8 +97,9 @@ namespace BetterEscape
 						Timing.CallDelayed(0.1f, () => ev.Player.Position = Map.GetRandomSpawnPoint(ev.Player.Role));
 						Log.Debug($"moved spectator out of the way: {ev.Player.Nickname}", BetterEscape.singleton.Config.Debug);
                     }
-				} 
+				}
 			}
+			ev.Player.ReferenceHub.characterClassManager.KeepItemsAfterEscaping = true; // This is needed to properly give players items respectively to their NEW role instead of the OLD one. don't ask me, ask northwood
 		}
 	} 
 }
