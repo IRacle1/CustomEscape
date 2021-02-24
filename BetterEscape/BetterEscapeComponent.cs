@@ -25,7 +25,7 @@ namespace BetterEscape
         {
             if (Ply.Role == RoleType.ClassD || Ply.Role == RoleType.Scientist) return;
             if (Vector3.Distance(Ply.Position, escapePos) > 2) return;
-
+            Log.Debug($"update:{Ply.Role}, IsCuffed:{Ply.IsCuffed}", Debug);
             Timing.CallDelayed(0.01f, () => Ply.SetRole(Ply.Role, false, true));
         }
         public void Destroy()
