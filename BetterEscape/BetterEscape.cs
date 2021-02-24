@@ -14,7 +14,7 @@ namespace BetterEscape
 		public override string Author { get; } = "Remindme";
 		public override string Name { get; } = "Better Escape";
 		public override string Prefix { get; } = "bEscape";
-		public override Version Version { get; } = new Version(2, 0, 1);
+		public override Version Version { get; } = new Version(2, 1, 0);
 		public override Version RequiredExiledVersion { get; } = new Version(2, 1, 34);
 
 		private EventHandlers EventHandlers { get; set; }
@@ -29,8 +29,8 @@ namespace BetterEscape
 
 			PlayerEvents.Verified += EventHandlers.OnVerified;
 			PlayerEvents.Left += EventHandlers.OnLeft;
-			PlayerEvents.ChangingRole += EventHandlers.OnChangingRole;
-			ServerEvents.EndingRound += EventHandlers.EndingRound;
+			PlayerEvents.Escaping += EventHandlers.OnEscaping;
+			ServerEvents.RoundEnded += EventHandlers.OnRoundEnded;
 
 			base.OnEnabled();
 		}
@@ -39,8 +39,8 @@ namespace BetterEscape
 		{
 			PlayerEvents.Verified -= EventHandlers.OnVerified;
 			PlayerEvents.Left -= EventHandlers.OnLeft;
-			PlayerEvents.ChangingRole -= EventHandlers.OnChangingRole;
-			ServerEvents.EndingRound -= EventHandlers.EndingRound;
+			PlayerEvents.Escaping -= EventHandlers.OnEscaping;
+			ServerEvents.RoundEnded -= EventHandlers.OnRoundEnded;
 
 			EventHandlers = null;
 
@@ -51,14 +51,14 @@ namespace BetterEscape
 	}
 	public class EventHandlers
     {
-		private CoroutineHandle coroutine = new CoroutineHandle();
 		public void OnVerified(VerifiedEventArgs ev)
 		{
 			ev.Player.GameObject.AddComponent<BetterEscapeComponent>();
 			Log.Debug($"attached: {ev.Player.Nickname}", BetterEscape.singleton.Config.Debug);
 		}
-		public void EndingRound(EndingRoundEventArgs ev)
+		public void OnRoundEnded(RoundEndedEventArgs ev)
 		{
+
 			foreach (Player pl in Player.List)
 			{
 				if (pl.GameObject.TryGetComponent(out BetterEscapeComponent betterEscape))
@@ -67,7 +67,6 @@ namespace BetterEscape
 					Log.Debug($"destroyed: {pl.Nickname}", BetterEscape.singleton.Config.Debug);
 				}
 			}
-			Timing.KillCoroutines(coroutine);
 		}
 		public void OnLeft(LeftEventArgs ev)
 		{
@@ -77,21 +76,23 @@ namespace BetterEscape
 				Log.Debug($"destroyed: {ev.Player.Nickname}", BetterEscape.singleton.Config.Debug);
 			}
 		}
-		public void OnChangingRole(ChangingRoleEventArgs ev)
+		public void OnEscaping(EscapingEventArgs ev)
 		{
-			if (!ev.IsEscaped) return;
+			if (!ev.IsAllowed) return;
 			
 			foreach (KeyValuePair<RoleType, PrettyCuffedConfig> kvp in BetterEscape.singleton.Config.RoleConversions)
 			{
 				if (kvp.Key == ev.Player.Role)
 				{
 					RoleType role = ev.Player.IsCuffed ? kvp.Value.CuffedRole : kvp.Value.UncuffedRole;
-					Log.Debug($"changingrole: {ev.Player.Role} to {role}, cuffed: {ev.Player.IsCuffed}", BetterEscape.singleton.Config.Debug);
-					if (role != RoleType.None)
+					Log.Debug($"escaping: {ev.Player.Role} to {role}, cuffed: {ev.Player.IsCuffed}", BetterEscape.singleton.Config.Debug);
+					ev.NewRole = role;
+					if (ev.NewRole == RoleType.None)
 					{
-						ev.NewRole = role;
+						ev.IsAllowed = false;
+						Log.Debug($"but not allowed", BetterEscape.singleton.Config.Debug);
 					}
-				}
+				} 
 			}
 		}
 	} 

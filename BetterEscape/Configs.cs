@@ -7,7 +7,7 @@ namespace BetterEscape
     public class Configs : IConfig
     {
         [Description("Enables BetterEscape")]
-        public bool IsEnabled { get; set; } = false;
+        public bool IsEnabled { get; set; } = true;
 
         // [Description("What should a Scientist become?")]
         // public RoleType ScientistTo { get; set; } = RoleType.ChaosInsurgency;
