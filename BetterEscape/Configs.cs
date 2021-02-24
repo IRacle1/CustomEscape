@@ -40,20 +40,16 @@ namespace BetterEscape
             {RoleType.ChaosInsurgency, new List<RoleType>(){RoleType.NtfCadet, RoleType.None}},
             {RoleType.ClassD, new List<RoleType>(){RoleType.NtfCadet, RoleType.ChaosInsurgency}}
         };*/
-        [Description("Self-explanatory. Wrong configs will lead to role changing to Scp173. You can pass None to not change role")]
-        public Dictionary<RoleType, MyRoleParser> RoleConversions { get; set; } = new Dictionary<RoleType, MyRoleParser>()
+        [Description("Self-explanatory. Wrong configs will lead to role changing to Scp173. You can pass None to not change role. Make sure you follow the example formatting or it *can* possibly break")]
+        public Dictionary<RoleType, PrettyCuffedConfig> RoleConversions { get; set; } = new Dictionary<RoleType, PrettyCuffedConfig>()
         {
-            {RoleType.FacilityGuard, new MyRoleParser{CuffedRole = RoleType.ChaosInsurgency, UncuffedRole = RoleType.NtfLieutenant} },
-            {RoleType.Scientist, new MyRoleParser{CuffedRole = RoleType.ChaosInsurgency, UncuffedRole = RoleType.NtfScientist} }
+            {RoleType.FacilityGuard, new PrettyCuffedConfig{CuffedRole = RoleType.ChaosInsurgency, UncuffedRole = RoleType.NtfLieutenant} },
+            {RoleType.Scientist, new PrettyCuffedConfig{CuffedRole = RoleType.ChaosInsurgency, UncuffedRole = RoleType.NtfScientist} }
         };
         public bool Debug { get; set; } = false;
     }
-    public class MyRoleParser
+    public class PrettyCuffedConfig // Because of this there will be "cuffed_role" and "uncuffed_role" config entries instead of just dictionaries
     {
-        public MyRoleParser()
-        {
-            Log.Info($"Created a parser: {CuffedRole}, {UncuffedRole}");
-        }
         public RoleType CuffedRole { get; set; } = RoleType.ChaosInsurgency;
         public RoleType UncuffedRole { get; set; } = RoleType.NtfCadet;
     }
