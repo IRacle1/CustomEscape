@@ -1,5 +1,4 @@
 ﻿using Exiled.API.Interfaces;
-using Exiled.API.Features;
 using System.Collections.Generic;
 using System.ComponentModel;
 
