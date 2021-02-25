@@ -36,15 +36,11 @@ namespace CustomEscape
         {
             if (!ev.IsEscaped) return;
 
-            foreach (KeyValuePair<RoleType, PrettyCuffedConfig> kvp in CustomEscape.singleton.Config.RoleConversions)
-            {
-                if (kvp.Key == ev.Player.Role)
-                {
-                    RoleType role = ev.Player.IsCuffed ? kvp.Value.CuffedRole : kvp.Value.UncuffedRole;
-                    Log.Debug($"changingrole: {ev.Player.Role} to {role}, cuffed: {ev.Player.IsCuffed}", CustomEscape.singleton.Config.Debug);
-                    ev.NewRole = role;
-                }
-            }
+            if (!CustomEscape.singleton.Config.RoleConversions.TryGetValue(ev.Player.Role, out PrettyCuffedConfig value)) return;
+
+            RoleType role = ev.Player.IsCuffed ? value.CuffedRole : value.UncuffedRole;
+            Log.Debug($"changingrole: {ev.Player.Role} to {role}, cuffed: {ev.Player.IsCuffed}", CustomEscape.singleton.Config.Debug);
+            ev.NewRole = role;
 
             // Because SetRole() is called with Player's current role, the items thing is not handled properly and the inventory is changed here, so exiled can change the inventory itself
             ev.Items.Clear();
