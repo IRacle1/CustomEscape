@@ -27,17 +27,5 @@ namespace CustomEscape
 
             Timing.CallDelayed(0.01f, () => Ply.SetRole(Ply.Role, false, true));
         }
-        public void Destroy()
-        {
-            try
-            {
-                Destroy(this);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Can't Destroy: {e}. For the love of god, HOW!?");
-            }
-        }
     }
-
 }
