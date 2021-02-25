@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using System;
+using Map = Exiled.Events.Handlers.Map;
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
 
@@ -25,10 +26,9 @@ namespace CustomEscape
 
             EventHandlers = new EventHandlers();
 
-            Player.Verified += EventHandlers.OnVerified;
-            Player.Destroying += EventHandlers.OnDestroying;
             Player.ChangingRole += EventHandlers.OnChangingRole;
             Player.Escaping += EventHandlers.OnEscaping;
+            Map.Generated += EventHandlers.OnGenerated;
             Server.RoundEnded += EventHandlers.OnRoundEnded;
 
             base.OnEnabled();
@@ -36,10 +36,9 @@ namespace CustomEscape
 
         public override void OnDisabled()
         {
-            Player.Verified -= EventHandlers.OnVerified;
-            Player.Destroying -= EventHandlers.OnDestroying;
             Player.ChangingRole -= EventHandlers.OnChangingRole;
             Player.Escaping -= EventHandlers.OnEscaping;
+            Map.Generated -= EventHandlers.OnGenerated;
             Server.RoundEnded -= EventHandlers.OnRoundEnded;
 
             EventHandlers = null;

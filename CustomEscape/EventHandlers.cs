@@ -2,35 +2,35 @@
 using Exiled.Events.EventArgs;
 using MEC;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CustomEscape
 {
     public class EventHandlers
     {
-        public void OnVerified(VerifiedEventArgs ev)
+        public static GameObject EscapePos;
+        public void OnGenerated()
         {
-            ev.Player.GameObject.AddComponent<CustomEscapeComponent>();
-            Log.Debug($"attached: {ev.Player.Nickname}", CustomEscape.singleton.Config.Debug);
+            EscapePos = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            Log.Debug("created a sphere", CustomEscape.singleton.Config.Debug);
+            EscapePos.transform.localScale = new Vector3(0, 0, 0); // stop bumping into that shit
+            EscapePos.transform.localPosition = new Vector3(170, 984, 26); // somehow it is not triggering properly if this is not set
+            Log.Debug($"modified the sphere: {EscapePos.transform.localScale}, {EscapePos.transform.localPosition}", CustomEscape.singleton.Config.Debug);
+
+            SphereCollider collider = EscapePos.AddComponent<SphereCollider>();
+            Log.Debug("attached a collider", CustomEscape.singleton.Config.Debug);
+            collider.center = new Vector3(170, 984, 26);
+            collider.radius = 2f;
+            collider.isTrigger = true;
+            Log.Debug($"modified the collider: {collider.center}, {collider.radius}, {collider.isTrigger}", CustomEscape.singleton.Config.Debug);
+
+            EscapePos.AddComponent<CustomEscapeComponent>();
+            Log.Debug("attached an escape component", CustomEscape.singleton.Config.Debug);
         }
         public void OnRoundEnded(RoundEndedEventArgs ev)
         {
-
-            foreach (Player pl in Player.List)
-            {
-                if (pl.GameObject.TryGetComponent(out CustomEscapeComponent betterEscape))
-                {
-                    betterEscape.Destroy();
-                    Log.Debug($"destroyed: {pl.Nickname}", CustomEscape.singleton.Config.Debug);
-                }
-            }
-        }
-        public void OnDestroying(DestroyingEventArgs ev)
-        {
-            if (ev.Player.GameObject.TryGetComponent(out CustomEscapeComponent betterEscape))
-            {
-                betterEscape.Destroy();
-                Log.Debug($"destroyed: {ev.Player.Nickname}", CustomEscape.singleton.Config.Debug);
-            }
+            Object.Destroy(EscapePos.gameObject); // lets hope unity handles the components for us
+            Log.Debug("destroyed the sphere", CustomEscape.singleton.Config.Debug);
         }
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
