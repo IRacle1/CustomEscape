@@ -26,7 +26,7 @@ namespace CustomEscape
             EventHandlers = new EventHandlers();
 
             Player.Verified += EventHandlers.OnVerified;
-            Player.Left += EventHandlers.OnLeft;
+            Player.Destroying += EventHandlers.OnDestroying;
             Player.ChangingRole += EventHandlers.OnChangingRole;
             Player.Escaping += EventHandlers.OnEscaping;
             Server.RoundEnded += EventHandlers.OnRoundEnded;
@@ -37,7 +37,7 @@ namespace CustomEscape
         public override void OnDisabled()
         {
             Player.Verified -= EventHandlers.OnVerified;
-            Player.Left -= EventHandlers.OnLeft;
+            Player.Destroying -= EventHandlers.OnDestroying;
             Player.ChangingRole -= EventHandlers.OnChangingRole;
             Player.Escaping -= EventHandlers.OnEscaping;
             Server.RoundEnded -= EventHandlers.OnRoundEnded;

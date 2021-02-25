@@ -24,7 +24,7 @@ namespace CustomEscape
                 }
             }
         }
-        public void OnLeft(LeftEventArgs ev)
+        public void OnDestroying(DestroyingEventArgs ev)
         {
             if (ev.Player.GameObject.TryGetComponent(out CustomEscapeComponent betterEscape))
             {
