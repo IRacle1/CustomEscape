@@ -7,7 +7,7 @@ namespace CustomEscape
 {
     public class CustomEscapeComponent : MonoBehaviour
     {
-        private bool Debug { get; set; } = CustomEscape.singleton.Config.Debug;
+        private bool Debug { get; set; } = CustomEscape.Singleton.Config.Debug;
 
         public void OnTriggerEnter(Collider col)
         {

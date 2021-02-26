@@ -18,11 +18,11 @@ namespace CustomEscape
 
         private EventHandlers EventHandlers { get; set; }
 
-        public static CustomEscape singleton;
+        public static CustomEscape Singleton;
 
         public override void OnEnabled()
         {
-            singleton = this;
+            Singleton = this;
 
             EventHandlers = new EventHandlers();
 
@@ -43,7 +43,7 @@ namespace CustomEscape
 
             EventHandlers = null;
 
-            singleton = null;
+            Singleton = null;
 
             base.OnDisabled();
         }
