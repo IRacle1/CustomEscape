@@ -9,13 +9,6 @@ namespace CustomEscape
     {
         private bool Debug { get; set; } = CustomEscape.singleton.Config.Debug;
 
-        public void Awake()
-        {
-        }
-
-        public void Update()
-        {
-        }
         public void OnTriggerEnter(Collider col)
         {
             Log.Debug("triggered", Debug);
