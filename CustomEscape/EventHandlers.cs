@@ -52,7 +52,7 @@ namespace CustomEscape
         }
         public void OnEscaping(EscapingEventArgs ev)
         {
-            Log.Debug($"RoleType is {ev.Player.Role}", CustomEscape.Singleton.Config.Debug);
+            Log.Debug($"RoleType is {ev.NewRole}", CustomEscape.Singleton.Config.Debug);
             if (!ev.IsAllowed) return;
             /*
 			 * Those checks are here and not in OnChangingRole() because
