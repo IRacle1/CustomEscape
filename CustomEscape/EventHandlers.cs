@@ -36,7 +36,11 @@ namespace CustomEscape
         {
             if (!ev.IsEscaped) return;
 
-            if (!CustomEscape.Singleton.Config.RoleConversions.TryGetValue(ev.Player.Role, out PrettyCuffedConfig value)) return;
+            if (!CustomEscape.Singleton.Config.RoleConversions.TryGetValue(ev.Player.Role, out PrettyCuffedConfig value))
+            {
+                ev.NewRole = RoleType.None;
+                return;
+            }
 
             RoleType role = ev.Player.IsCuffed ? value.CuffedRole : value.UncuffedRole;
             Log.Debug($"changingrole: {ev.Player.Role} to {role}, cuffed: {ev.Player.IsCuffed}", CustomEscape.Singleton.Config.Debug);
