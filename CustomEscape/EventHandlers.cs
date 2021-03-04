@@ -20,7 +20,7 @@ namespace CustomEscape
             SphereCollider collider = EscapePos.AddComponent<SphereCollider>();
             Log.Debug("attached a collider", CustomEscape.Singleton.Config.Debug);
             collider.center = new Vector3(170, 984, 26);
-            collider.radius = 2f;
+            collider.radius = 10f;
             collider.isTrigger = true;
             Log.Debug($"modified the collider: {collider.center}, {collider.radius}, {collider.isTrigger}", CustomEscape.Singleton.Config.Debug);
 
