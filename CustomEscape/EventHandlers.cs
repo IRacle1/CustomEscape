@@ -1,7 +1,6 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using MEC;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CustomEscape

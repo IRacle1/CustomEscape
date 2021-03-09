@@ -1,6 +1,5 @@
 ﻿using Exiled.API.Features;
 using MEC;
-using System;
 using UnityEngine;
 
 namespace CustomEscape
