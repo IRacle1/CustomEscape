@@ -13,6 +13,11 @@ namespace CustomEscape
         {
             Log.Debug("triggered", Debug);
             Player Ply = Player.Get(col.gameObject);
+            if (Ply == null)
+            {
+                Log.Debug("it wasn't a player");
+                return;
+            }
 
             if (Ply.Role == RoleType.ClassD || Ply.Role == RoleType.Scientist) return;
 
