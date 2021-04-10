@@ -12,7 +12,7 @@ namespace CustomEscape
         public override string Author { get; } = "Remindme";
         public override string Name { get; } = "Custom Escapes";
         public override string Prefix { get; } = "bEscape";
-        public override Version Version { get; } = new Version(2, 5, 0);
+        public override Version Version { get; } = new Version(2, 5, 1);
         public override Version RequiredExiledVersion { get; } = new Version(2, 8, 0);
         public override PluginPriority Priority { get; } = PluginPriority.Highest;
 
