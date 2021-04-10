@@ -12,15 +12,15 @@ namespace CustomEscape
         {
             EscapePos = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             Log.Debug("created a sphere", CustomEscape.Singleton.Config.Debug);
-            EscapePos.transform.localScale = new Vector3(0, 0, 0); // stop bumping into that shit
-            EscapePos.transform.localPosition = new Vector3(170, 984, 26); // somehow it is not triggering properly if this is not set
+            EscapePos.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f); // stop bumping into that shit. not 0 because unity
+            EscapePos.transform.localPosition = new Vector3(170f, 985f, 26f);
             Log.Debug($"modified the sphere: {EscapePos.transform.localScale}, {EscapePos.transform.localPosition}", CustomEscape.Singleton.Config.Debug);
+            Component[] comps = EscapePos.GetComponents(typeof(Component));
 
-            SphereCollider collider = EscapePos.AddComponent<SphereCollider>();
-            Log.Debug("attached a collider", CustomEscape.Singleton.Config.Debug);
-            collider.center = new Vector3(170, 984, 26);
-            collider.radius = 10f;
+            SphereCollider collider = EscapePos.GetComponent<SphereCollider>();
+            Log.Debug($"got a collider: {collider}", CustomEscape.Singleton.Config.Debug);
             collider.isTrigger = true;
+            collider.radius = 10f;
             Log.Debug($"modified the collider: {collider.center}, {collider.radius}, {collider.isTrigger}", CustomEscape.Singleton.Config.Debug);
 
             EscapePos.AddComponent<CustomEscapeComponent>();
