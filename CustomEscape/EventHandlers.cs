@@ -15,7 +15,6 @@ namespace CustomEscape
             EscapePos.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f); // stop bumping into that shit. not 0 because unity
             EscapePos.transform.localPosition = new Vector3(170f, 985f, 26f);
             Log.Debug($"modified the sphere: {EscapePos.transform.localScale}, {EscapePos.transform.localPosition}", CustomEscape.Singleton.Config.Debug);
-            Component[] comps = EscapePos.GetComponents(typeof(Component));
 
             SphereCollider collider = EscapePos.GetComponent<SphereCollider>();
             Log.Debug($"got a collider: {collider}", CustomEscape.Singleton.Config.Debug);
