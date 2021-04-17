@@ -18,8 +18,6 @@ namespace CustomEscape
                 return;
             }
 
-            if (Ply.Role == RoleType.ClassD || Ply.Role == RoleType.Scientist) return;
-
             Log.Debug($"setting role: {Ply.Nickname}, {Ply.Role}, IsCuffed:{Ply.IsCuffed}", Debug);
 
             Timing.CallDelayed(0.01f, () => Ply.SetRole(Ply.Role, false, true));
