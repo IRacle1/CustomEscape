@@ -19,7 +19,7 @@ namespace CustomEscape
             SphereCollider collider = EscapePos.GetComponent<SphereCollider>();
             Log.Debug($"got a collider: {collider}", CustomEscape.Singleton.Config.Debug);
             collider.isTrigger = true;
-            collider.radius = 50f;
+            collider.radius = 100f;
             Log.Debug($"modified the collider: {collider.center}, {collider.radius}, {collider.isTrigger}", CustomEscape.Singleton.Config.Debug);
 
             EscapePos.AddComponent<CustomEscapeComponent>();
