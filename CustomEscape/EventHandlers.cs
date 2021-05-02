@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Exiled.API.Extensions;
 using Exiled.Events.EventArgs;
 using MEC;
 using UnityEngine;
@@ -62,10 +63,40 @@ namespace CustomEscape
                 ev.IsAllowed = false;
                 Log.Debug($"so we're not allowing the escape", CustomEscape.Singleton.Config.Debug);
             }
-            if (ev.NewRole == RoleType.Spectator)
+            else if (ev.NewRole == RoleType.Spectator)
             {
                 Timing.CallDelayed(0.1f, () => ev.Player.Position = ev.Player.Role.GetRandomSpawnPoint());
                 Log.Debug($"so we're moving spectator out of the way: {ev.Player.Nickname}", CustomEscape.Singleton.Config.Debug);
+            }
+            else if (ev.Player.Team == Team.CDP)
+            {
+                if (ev.Player.IsCuffed)
+                {
+                    RoundSummary.escaped_scientists++;
+                    Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.NineTailedFox, GameCore.ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_classd_cuffed_count", 1));
+                    Log.Debug($"so we're adding tickets to NTF", CustomEscape.Singleton.Config.Debug);
+                }
+                else
+                {
+                    RoundSummary.escaped_ds++;
+                    Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, GameCore.ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_classd_count", 1));
+                    Log.Debug($"so we're adding tickets to CI", CustomEscape.Singleton.Config.Debug);
+                }
+            }
+            else if (ev.Player.Team == Team.RSC)
+            {
+                if (ev.Player.IsCuffed)
+                {
+                    RoundSummary.escaped_ds++;
+                    Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, GameCore.ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_scientist_cuffed_count", 2));
+                    Log.Debug($"so we're adding tickets to CI", CustomEscape.Singleton.Config.Debug);
+                }
+                else
+                {
+                    RoundSummary.escaped_scientists++;
+                    Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.NineTailedFox, GameCore.ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_scientist_count", 1));
+                    Log.Debug($"so we're adding tickets to NTF", CustomEscape.Singleton.Config.Debug);
+                }
             }
         }
     }
