@@ -54,10 +54,10 @@ namespace CustomEscape
             Log.Debug($"RoleType is {ev.NewRole}", CustomEscape.Singleton.Config.Debug);
             if (!ev.IsAllowed) return;
             /*
-			 * Those checks are here and not in OnChangingRole() because
-			 * 1. I need the IsAllowed property which is not present in ChangingRole
-			 * 2. Other plugins can override the NewRole and it will affect the logic
-			 */
+             * Those checks are here and not in OnChangingRole() because
+             * 1. I need the IsAllowed property which is not present in ChangingRole
+             * 2. Other plugins can override the NewRole and it will affect the logic
+             */
             if (ev.NewRole == RoleType.None)
             {
                 ev.IsAllowed = false;

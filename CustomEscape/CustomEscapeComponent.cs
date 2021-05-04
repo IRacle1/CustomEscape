@@ -11,16 +11,16 @@ namespace CustomEscape
         public void OnTriggerEnter(Collider col)
         {
             Log.Debug("triggered", Debug);
-            Player Ply = Player.Get(col.gameObject);
-            if (Ply == null)
+            Player ply = Player.Get(col.gameObject);
+            if (ply == null)
             {
                 Log.Debug("it wasn't a player");
                 return;
             }
 
-            Log.Debug($"setting role: {Ply.Nickname}, {Ply.Role}, IsCuffed:{Ply.IsCuffed}", Debug);
+            Log.Debug($"setting role: {ply.Nickname}, {ply.Role}, IsCuffed:{ply.IsCuffed}", Debug);
 
-            Timing.CallDelayed(0.01f, () => Ply.SetRole(Ply.Role, false, true));
+            Timing.CallDelayed(0.01f, () => ply.SetRole(ply.Role, false, true));
         }
     }
 }
