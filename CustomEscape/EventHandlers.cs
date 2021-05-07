@@ -67,7 +67,7 @@ namespace CustomEscape
                 Timing.CallDelayed(0.1f, () => ev.Player.Position = ev.Player.Role.GetRandomSpawnPoint());
                 Log.Debug($"so we're moving spectator out of the way: {ev.Player.Nickname}", CustomEscape.Singleton.Config.Debug);
             }
-            else if (ev.Player.Team == Team.CDP)
+            if (ev.Player.Team == Team.CDP)
             {
                 if (ev.Player.IsCuffed)
                 {
