@@ -1,6 +1,6 @@
-﻿using Exiled.API.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Exiled.API.Interfaces;
 
 namespace CustomEscape
 {
@@ -8,6 +8,8 @@ namespace CustomEscape
     {
         [Description("Enables Custom Escape")]
         public bool IsEnabled { get; set; } = true;
+        [Description("How big will the escape zone be")]
+        public float EscapeRadius { get; set; } = 100f;
         [Description("Self-explanatory. Wrong configs will lead to role changing to Scp173. You can pass None to not change role. Make sure you follow the example formatting or it *can* possibly break")]
         public Dictionary<RoleType, PrettyCuffedConfig> RoleConversions { get; set; } = new Dictionary<RoleType, PrettyCuffedConfig>()
         {
