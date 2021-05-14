@@ -64,7 +64,7 @@ namespace CustomEscape
             }
             else if (ev.NewRole == RoleType.Spectator)
             {
-                Timing.CallDelayed(0.1f, () => ev.Player.Position = ev.Player.Role.GetRandomSpawnPoint());
+                Timing.CallDelayed(delay: 0.1f, action: () => ev.Player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(ev.Player.Role));
                 Log.Debug($"so we're moving spectator out of the way: {ev.Player.Nickname}", CustomEscape.Singleton.Config.Debug);
             }
             if (ev.Player.Team == Team.CDP)
