@@ -38,6 +38,12 @@ namespace CustomEscape
                     new PrettyCuffedConfig {CuffedRole = RoleType.ChaosInsurgency, UnCuffedRole = RoleType.NtfScientist}
                 }
             };
+
+        [Description("Hint that will be shown on escape. Possible literals: [newrole], [oldrole] ")]
+        public string EscapeHint { get; set; } = "You escaped the complex as [oldrole]!";
+
+        [Description("The time the hint will be shown")]
+        public float EscapeHintDuration { get; set; } = 3f;
         
         
 
