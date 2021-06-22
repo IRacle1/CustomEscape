@@ -6,12 +6,12 @@ namespace CustomEscape
 {
     public class CustomEscapeComponent : MonoBehaviour
     {
-        private bool Debug { get; set; } = CustomEscape.Singleton.Config.Debug;
+        private bool Debug { get; } = CustomEscape.Singleton.Config.Debug;
 
         public void OnTriggerEnter(Collider col)
         {
             Log.Debug("triggered", Debug);
-            Player ply = Player.Get(col.gameObject);
+            var ply = Player.Get(col.gameObject);
             if (ply == null)
             {
                 Log.Debug("it wasn't a player");
