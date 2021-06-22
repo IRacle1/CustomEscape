@@ -38,6 +38,11 @@ namespace CustomEscape
                 }
             };
 
+        [Description("Hint that will be shown on escape. Possible literals: [newrole], [oldrole] ")]
+        public string EscapeHint { get; set; } = "You escaped the complex as [oldrole]!";
+
+        [Description("The time the hint will be shown")]
+        public float EscapeHintDuration { get; set; } = 3f;
 
         [Description("Points file. It contains all escape positions in the form of IDs and raw XYZ data")]
         public string PointsFileName { get; set; } = "EscapePoints";

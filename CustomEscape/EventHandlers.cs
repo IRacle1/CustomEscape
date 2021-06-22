@@ -151,6 +151,12 @@ namespace CustomEscape
                     break;
             }
 
+            ev.Player.ShowHint(
+                CustomEscape.Singleton.Config.EscapeHint
+                    .Replace("[oldrole]", ev.Player.Role.ToString())
+                    .Replace("[newrole]", ev.NewRole.ToString()), 
+                CustomEscape.Singleton.Config.EscapeHintDuration);
+
             if (ev.Player.Team == Team.CDP)
             {
                 if (ev.Player.IsCuffed)
