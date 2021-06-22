@@ -1,7 +1,7 @@
 ﻿using System;
-using ArithFeather.Points;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Map = Exiled.Events.Handlers.Map;
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
 
@@ -30,7 +30,7 @@ namespace CustomEscape
             Player.ChangingRole += EventHandlers.OnChangingRole;
             Player.Escaping += EventHandlers.OnEscaping;
             Server.RoundEnded += EventHandlers.OnRoundEnded;
-            Points.OnLoadSpawnPoints += EventHandlers.OnLoadSpawnPoints;
+            Map.Generated += EventHandlers.OnGenerated;
 
             base.OnEnabled();
         }
@@ -40,7 +40,7 @@ namespace CustomEscape
             Player.ChangingRole -= EventHandlers.OnChangingRole;
             Player.Escaping -= EventHandlers.OnEscaping;
             Server.RoundEnded -= EventHandlers.OnRoundEnded;
-            Points.OnLoadSpawnPoints -= EventHandlers.OnLoadSpawnPoints;
+            Map.Generated -= EventHandlers.OnGenerated;
 
             EventHandlers = null;
 

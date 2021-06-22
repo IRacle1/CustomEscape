@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using ArithFeather.Points;
 using ArithFeather.Points.DataTypes;
 using ArithFeather.Points.Tools;
 using Exiled.API.Enums;
@@ -16,7 +17,7 @@ namespace CustomEscape
             new Dictionary<string, EscapePointConfig>
             {
                 {
-                    "Escape0", new EscapePointConfig
+                    "escape0", new EscapePointConfig
                     {
                         EscapeRadius = 100f
                     }
@@ -38,8 +39,6 @@ namespace CustomEscape
                     new PrettyCuffedConfig {CuffedRole = RoleType.ChaosInsurgency, UnCuffedRole = RoleType.NtfScientist}
                 }
             };
-        
-        
 
 
         [Description("Points file. It contains all escape positions in the form of IDs and raw XYZ data")]
@@ -50,14 +49,15 @@ namespace CustomEscape
 
         public void TryCreateFile()
         {
+            Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
             if (FileManager.FileExists(Path.Combine(PointIO.FolderPath, PointsFileName) + ".txt"))
                 return;
             Log.Info("Creating new EscapePoint file using default spawn points.");
 
             PointIO.Save(new PointList(new List<RawPoint>
             {
-                new RawPoint("Escape0", RoomType.Surface, new Vector3(170f, 985f, 26f), new Vector3(0f, 0f, 0f))
-            }), PointsFileName);
+                new RawPoint("escape0", RoomType.Surface, new Vector3(170f, -17, 26f), new Vector3(0f, 0f, 0f))
+            }), Path.Combine(PointIO.FolderPath, PointsFileName) + ".txt");
         }
     }
 

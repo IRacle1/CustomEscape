@@ -18,50 +18,63 @@ namespace CustomEscape
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private static Dictionary<string, GameObject> _escapePosDict = new Dictionary<string, GameObject>();
 
-        public void OnLoadSpawnPoints()
+        public void OnGenerated()
         {
-            foreach (var kvp in _escapePosDict)
-                Object.Destroy(kvp.Value);
-
-            _escapePosDict.Clear();
-
-            _pointsPointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
-            _pointsPointList.FixData();
-
-            Timing.CallDelayed(.5f, () =>
+            Timing.CallDelayed(.1f, () =>
             {
-                foreach (var escapePoint in CustomEscape.Singleton.Config.EscapePoints)
+                foreach (var kvp in _escapePosDict)
+                    Object.Destroy(kvp.Value);
+
+                _escapePosDict.Clear();
+
+                _pointsPointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
+                _pointsPointList.FixData();
+                Log.Debug(
+                    "Fixed points: " + _pointsPointList.FixedPoints.Count + " " +
+                    string.Join(",", _pointsPointList.FixedPoints.Select(x => x.Room)),
+                    CustomEscape.Singleton.Config.Debug);
+                Log.Debug(
+                    "Escape points: " + CustomEscape.Singleton.Config.EscapePoints.Count + " " +
+                    string.Join(",",
+                        CustomEscape.Singleton.Config.EscapePoints.Select(x => x.Key)),
+                    CustomEscape.Singleton.Config.Debug);
+
+                Timing.CallDelayed(.5f, () =>
                 {
-                    var fixedPoint = _pointsPointList.FixedPoints.FirstOrDefault(x => x.Id == escapePoint.Key);
-                    if (fixedPoint == null)
+                    foreach (var escapePoint in CustomEscape.Singleton.Config.EscapePoints)
                     {
-                        Log.Error("Unknown Id while trying to create escape point: " + escapePoint.Key);
-                        continue;
+                        var fixedPoint = _pointsPointList.FixedPoints.FirstOrDefault(x => x.Id == escapePoint.Key);
+                        if (fixedPoint == null)
+                        {
+                            Log.Error("Unknown Id while trying to create escape point: " + escapePoint.Key);
+                            continue;
+                        }
+
+                        var escapePos = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        _escapePosDict.Add(fixedPoint.Id, escapePos);
+
+                        Log.Debug("created a sphere " + fixedPoint.Id, CustomEscape.Singleton.Config.Debug);
+                        escapePos.transform.localScale =
+                            new Vector3(.1f, .1f, .1f); // stop bumping into that shit. not 0 because unity succ
+                        escapePos.transform.localPosition = fixedPoint.Position;
+                        Log.Debug(
+                            "modified the sphere " + fixedPoint.Id +
+                            ": {EscapePos.transform.localScale}, {EscapePos.transform.localPosition}",
+                            CustomEscape.Singleton.Config.Debug);
+
+                        var collider = escapePos.GetComponent<SphereCollider>();
+                        Log.Debug("got a collider of " + fixedPoint.Id + ": {collider}",
+                            CustomEscape.Singleton.Config.Debug);
+                        collider.isTrigger = true;
+                        collider.radius = escapePoint.Value.EscapeRadius;
+                        Log.Debug($"modified the collider: {collider.center}, {collider.radius}, {collider.isTrigger}",
+                            CustomEscape.Singleton.Config.Debug);
+
+                        escapePos.AddComponent<CustomEscapeComponent>();
+                        Log.Debug("attached an escape component to " + fixedPoint.Id,
+                            CustomEscape.Singleton.Config.Debug);
                     }
-
-                    var escapePos = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    _escapePosDict.Add(fixedPoint.Id, escapePos);
-
-                    Log.Debug("created a sphere " + fixedPoint.Id, CustomEscape.Singleton.Config.Debug);
-                    escapePos.transform.localScale =
-                        new Vector3(.1f, .1f, .1f); // stop bumping into that shit. not 0 because unity succ
-                    escapePos.transform.localPosition = fixedPoint.Position;
-                    Log.Debug(
-                        "modified the sphere " + fixedPoint.Id +
-                        ": {EscapePos.transform.localScale}, {EscapePos.transform.localPosition}",
-                        CustomEscape.Singleton.Config.Debug);
-
-                    var collider = escapePos.GetComponent<SphereCollider>();
-                    Log.Debug("got a collider of " + fixedPoint.Id + ": {collider}",
-                        CustomEscape.Singleton.Config.Debug);
-                    collider.isTrigger = true;
-                    collider.radius = escapePoint.Value.EscapeRadius;
-                    Log.Debug($"modified the collider: {collider.center}, {collider.radius}, {collider.isTrigger}",
-                        CustomEscape.Singleton.Config.Debug);
-
-                    escapePos.AddComponent<CustomEscapeComponent>();
-                    Log.Debug("attached an escape component to " + fixedPoint.Id, CustomEscape.Singleton.Config.Debug);
-                }
+                });
             });
         }
 
@@ -112,7 +125,7 @@ namespace CustomEscape
                 Log.Debug("so we're not allowing the escape", CustomEscape.Singleton.Config.Debug);
                 return;
             }
-            
+
             if (ev.NewRole == RoleType.Spectator)
             {
                 Timing.CallDelayed(0.1f,
