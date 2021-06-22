@@ -110,8 +110,10 @@ namespace CustomEscape
             {
                 ev.IsAllowed = false;
                 Log.Debug("so we're not allowing the escape", CustomEscape.Singleton.Config.Debug);
+                return;
             }
-            else if (ev.NewRole == RoleType.Spectator)
+            
+            if (ev.NewRole == RoleType.Spectator)
             {
                 Timing.CallDelayed(0.1f,
                     () => ev.Player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(ev.Player.Role));
