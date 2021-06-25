@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Lib.Harmony.2.0.4\lib\net472\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
@@ -102,9 +106,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configs.cs" />
-    <Compile Include="CustomEscapeComponent.cs" />
     <Compile Include="CustomEscape.cs" />
+    <Compile Include="CustomEscapeComponent.cs" />
     <Compile Include="EventHandlers.cs" />
+    <Compile Include="Patches\AntiCheatRaycast.cs" />
+    <Compile Include="Patches\AntiFly.cs" />
+    <Compile Include="Patches\CheckAnticheatSafe.cs" />
+    <Compile Include="Patches\CheckIfGrounded.cs" />
+    <Compile Include="Patches\TargetShowEscapeMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

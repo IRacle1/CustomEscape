@@ -20,6 +20,8 @@ namespace CustomEscape
 
             Log.Debug($"setting role: {ply.Nickname}, {ply.Role}, IsCuffed:{ply.IsCuffed}", Debug);
 
+            ply.SessionVariables["plugin_escaping"] = true;
+
             Timing.CallDelayed(0.01f, () => ply.SetRole(ply.Role, false, true));
         }
     }

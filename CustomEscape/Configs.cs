@@ -19,20 +19,22 @@ namespace CustomEscape
                 {
                     "escape0", new EscapePointConfig
                     {
-                        EscapeRadius = 100f
+                        EscapeRadius = 1000f
                     }
                 }
             };
 
         [Description(
-            "Self-explanatory. Wrong configs will lead to role changing to Scp173. You can pass None to not change role. Make sure you follow the example formatting or it *can* possibly break")]
+            "Self-explanatory. Wrong configs will lead to role changing to Scp173. " +
+            "You can pass None to not change role. " +
+            "Make sure you follow the example formatting or it *can* possibly break")]
         public Dictionary<RoleType, PrettyCuffedConfig> RoleConversions { get; set; } =
             new Dictionary<RoleType, PrettyCuffedConfig>
             {
                 {
-                    RoleType.FacilityGuard,
+                    RoleType.ClassD,
                     new PrettyCuffedConfig
-                        {CuffedRole = RoleType.ChaosInsurgency, UnCuffedRole = RoleType.NtfLieutenant}
+                        {CuffedRole = RoleType.NtfCadet, UnCuffedRole = RoleType.ChaosInsurgency}
                 },
                 {
                     RoleType.Scientist,
@@ -49,15 +51,17 @@ namespace CustomEscape
 
         public void TryCreateFile()
         {
-            Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
+            var pointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
             if (FileManager.FileExists(Path.Combine(PointIO.FolderPath, PointsFileName) + ".txt"))
                 return;
             Log.Info("Creating new EscapePoint file using default spawn points.");
 
-            PointIO.Save(new PointList(new List<RawPoint>
-            {
-                new RawPoint("escape0", RoomType.Surface, new Vector3(170f, -17, 26f), new Vector3(0f, 0f, 0f))
-            }), Path.Combine(PointIO.FolderPath, PointsFileName) + ".txt");
+            pointList.RawPoints.Add(
+                new RawPoint("escape0", RoomType.Surface,
+                    new Vector3(170f, -16.6f, 25f), new Vector3(0f, 0f, 0f))
+            );
+            PointIO.Save(pointList, Path.Combine(PointIO.FolderPath, PointsFileName) + ".txt");
+            pointList.FixData();
         }
     }
 
@@ -68,7 +72,7 @@ namespace CustomEscape
     }
 
     public class
-        PrettyCuffedConfig // Because of this there will be "cuffed_role" and "uncuffed_role" config entries instead of just dictionaries
+        PrettyCuffedConfig // Because of this there will be "cuffed_role" and "un_cuffed_role" config entries instead of just dictionaries
     {
         public RoleType CuffedRole { get; set; } = RoleType.ChaosInsurgency;
         public RoleType UnCuffedRole { get; set; } = RoleType.NtfCadet;

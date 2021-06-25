@@ -1,6 +1,7 @@
 ﻿using System;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using HarmonyLib;
 using Map = Exiled.Events.Handlers.Map;
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
@@ -10,6 +11,8 @@ namespace CustomEscape
     public class CustomEscape : Plugin<Configs>
     {
         public static CustomEscape Singleton;
+
+        private static Harmony _harmony;
         public override string Author { get; } = "Remindme";
         public override string Name { get; } = "Custom Escapes";
         public override string Prefix { get; } = "bEscape";
@@ -21,11 +24,15 @@ namespace CustomEscape
 
         public override void OnEnabled()
         {
+            _harmony = new Harmony(Prefix + DateTime.Now.Ticks);
+
             Singleton = this;
 
             EventHandlers = new EventHandlers();
 
             Config.TryCreateFile();
+
+            _harmony.PatchAll();
 
             Player.ChangingRole += EventHandlers.OnChangingRole;
             Player.Escaping += EventHandlers.OnEscaping;
@@ -45,6 +52,9 @@ namespace CustomEscape
             EventHandlers = null;
 
             Singleton = null;
+
+            _harmony.UnpatchAll();
+            _harmony = null;
 
             base.OnDisabled();
         }
