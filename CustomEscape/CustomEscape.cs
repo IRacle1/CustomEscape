@@ -8,6 +8,7 @@ using Server = Exiled.Events.Handlers.Server;
 
 namespace CustomEscape
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class CustomEscape : Plugin<Configs>
     {
         public static CustomEscape Singleton;
@@ -20,15 +21,11 @@ namespace CustomEscape
         public override Version RequiredExiledVersion { get; } = new Version(2, 10, 0);
         public override PluginPriority Priority { get; } = PluginPriority.Highest;
 
-        private EventHandlers EventHandlers { get; set; }
-
         public override void OnEnabled()
         {
             _harmony = new Harmony(Prefix + DateTime.Now.Ticks);
 
             Singleton = this;
-
-            EventHandlers = new EventHandlers();
 
             Config.TryCreateFile();
 
@@ -48,8 +45,6 @@ namespace CustomEscape
             Player.Escaping -= EventHandlers.OnEscaping;
             Server.RoundEnded -= EventHandlers.OnRoundEnded;
             Map.Generated -= EventHandlers.OnGenerated;
-
-            EventHandlers = null;
 
             Singleton = null;
 

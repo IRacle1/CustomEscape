@@ -18,9 +18,10 @@ namespace CustomEscape
                 return;
             }
 
-            Log.Debug($"setting role: {ply.Nickname}, {ply.Role}, IsCuffed:{ply.IsCuffed}", Debug);
+            Log.Debug($"setting role: '{ply.Nickname}', '{ply.Role}', IsCuffed:'{ply.IsCuffed}'", Debug);
+            Log.Debug($"setting session variable '{EventHandlers.SessionVariable}': '{gameObject.name}'");
 
-            ply.SessionVariables["plugin_escaping"] = true;
+            ply.SessionVariables[EventHandlers.SessionVariable] = gameObject.name;
 
             Timing.CallDelayed(0.01f, () => ply.SetRole(ply.Role, false, true));
         }

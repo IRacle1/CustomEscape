@@ -11,14 +11,16 @@ using Log = Exiled.API.Features.Log;
 
 namespace CustomEscape
 {
-    public class EventHandlers
+    public static class EventHandlers
     {
+        public const string SessionVariable = "plugin_escaping_collider_name";
+
         private static PointList _pointsPointList;
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private static Dictionary<string, GameObject> _escapePosDict = new Dictionary<string, GameObject>();
 
-        public void OnGenerated()
+        public static void OnGenerated()
         {
             Timing.CallDelayed(.5f, () =>
             {
@@ -29,6 +31,7 @@ namespace CustomEscape
 
                 _pointsPointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
                 _pointsPointList.FixData();
+
                 Log.Debug(
                     "Raw points: " + _pointsPointList.RawPoints.Count + " " +
                     string.Join(",", _pointsPointList.RawPoints.Select(x => x.RoomType)),
@@ -61,12 +64,11 @@ namespace CustomEscape
                         new Vector3(0.001f, 0.001f, 0.001f); // stop bumping into that shit
                     escapePos.transform.localPosition = fixedPoint.Position;
                     Log.Debug(
-                        "modified the sphere " + fixedPoint.Id +
-                        ": {EscapePos.transform.localScale}, {EscapePos.transform.localPosition}",
+                        $"modified the sphere '{fixedPoint.Id}': {escapePos.transform.localScale}, {escapePos.transform.localPosition}",
                         CustomEscape.Singleton.Config.Debug);
 
                     var collider = escapePos.GetComponent<SphereCollider>();
-                    Log.Debug("got a collider of " + fixedPoint.Id + ": {collider}",
+                    Log.Debug($"got a collider of '{fixedPoint.Id}': '{collider}'",
                         CustomEscape.Singleton.Config.Debug);
                     collider.isTrigger = true;
                     collider.radius = escapePoint.Value.EscapeRadius;
@@ -74,36 +76,46 @@ namespace CustomEscape
                         CustomEscape.Singleton.Config.Debug);
 
                     escapePos.AddComponent<CustomEscapeComponent>();
-                    Log.Debug("attached an escape component to " + fixedPoint.Id,
+                    Log.Debug($"attached an escape component to '{fixedPoint.Id}'",
                         CustomEscape.Singleton.Config.Debug);
                 }
             });
         }
 
-        public void OnRoundEnded(RoundEndedEventArgs ev)
+        public static void OnRoundEnded(RoundEndedEventArgs ev)
         {
             foreach (var kvp in _escapePosDict)
             {
                 Object.Destroy(kvp.Value);
-                Log.Debug("destroyed the " + kvp.Key, CustomEscape.Singleton.Config.Debug);
+                Log.Debug($"destroyed the '{kvp.Key}'", CustomEscape.Singleton.Config.Debug);
             }
 
             _escapePosDict.Clear();
         }
 
-        public void OnChangingRole(ChangingRoleEventArgs ev)
+        public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!ev.IsEscaped) return;
+            if (!ev.Player.SessionVariables.TryGetValue(SessionVariable, out var objValue) ||
+                !(objValue is string sValue) ||
+                !CustomEscape.Singleton.Config.EscapePoints.TryGetValue(sValue, out var epc))
+            {
+                Log.Debug("the escape is not performed by a custom collider or we don't have a role to change to");
+                ev.NewRole = RoleType.None;
+                return;
+            }
 
-            if (!CustomEscape.Singleton.Config.RoleConversions.TryGetValue(ev.Player.Role,
-                out var value))
+            Log.Debug($"got session variable and escape point config: '{sValue}'");
+
+            if (!epc.RoleConversions.TryGetValue(ev.Player.Role,
+                out var pcc))
             {
                 ev.NewRole = RoleType.None;
                 return;
             }
 
-            var role = ev.Player.IsCuffed ? value.CuffedRole : value.UnCuffedRole;
-            Log.Debug($"changing role: {ev.Player.Role} to {role}, cuffed: {ev.Player.IsCuffed}",
+            var role = ev.Player.IsCuffed ? pcc.CuffedRole : pcc.UnCuffedRole;
+            Log.Debug($"changing role: '{ev.Player.Role}' to '{role}', cuffed: '{ev.Player.IsCuffed}'",
                 CustomEscape.Singleton.Config.Debug);
             ev.NewRole = role;
 
@@ -112,17 +124,12 @@ namespace CustomEscape
             ev.Items.AddRange(ev.Player.ReferenceHub.characterClassManager.Classes.SafeGet(ev.NewRole).startItems);
         }
 
-        public void OnEscaping(EscapingEventArgs ev)
+        public static void OnEscaping(EscapingEventArgs ev)
         {
-            Log.Debug($"RoleType is {ev.NewRole}", CustomEscape.Singleton.Config.Debug);
-            if (!ev.Player.SessionVariables.TryGetValue("plugin_escaping", out var objValue) ||
-                !(objValue is bool bValue) || !bValue)
-            {
-                Log.Debug("but the escape is not performed by custom collider, so we're not allowing the escape");
-                ev.IsAllowed = false;
-            }
+            Log.Debug($"RoleType is '{ev.NewRole}'", CustomEscape.Singleton.Config.Debug);
 
-            ev.Player.SessionVariables["plugin_escping"] = false;
+            ev.Player.SessionVariables[SessionVariable] = null;
+            Log.Debug($"set '{SessionVariable}' back to 'null'");
 
             if (!ev.IsAllowed) return;
             /*
@@ -130,19 +137,18 @@ namespace CustomEscape
              * 1. I need the IsAllowed property which is not present in ChangingRole
              * 2. Other plugins can override the NewRole and it will affect the logic
              */
-            if (ev.NewRole == RoleType.None)
+            switch (ev.NewRole)
             {
-                ev.IsAllowed = false;
-                Log.Debug("so we're not allowing the escape", CustomEscape.Singleton.Config.Debug);
-                return;
-            }
-
-            if (ev.NewRole == RoleType.Spectator)
-            {
-                Timing.CallDelayed(0.1f,
-                    () => ev.Player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(ev.Player.Role));
-                Log.Debug($"so we're moving spectator out of the way: {ev.Player.Nickname}",
-                    CustomEscape.Singleton.Config.Debug);
+                case RoleType.None:
+                    ev.IsAllowed = false;
+                    Log.Debug("so we're not allowing the escape", CustomEscape.Singleton.Config.Debug);
+                    return;
+                case RoleType.Spectator:
+                    Timing.CallDelayed(0.1f,
+                        () => ev.Player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(ev.Player.Role));
+                    Log.Debug($"so we're moving spectator out of the way: {ev.Player.Nickname}",
+                        CustomEscape.Singleton.Config.Debug);
+                    break;
             }
 
             if (ev.Player.Team == Team.CDP)

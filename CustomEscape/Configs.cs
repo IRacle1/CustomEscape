@@ -13,32 +13,28 @@ namespace CustomEscape
 {
     public class Configs : IConfig
     {
+        // who said nested?
         public Dictionary<string, EscapePointConfig> EscapePoints { get; set; } =
             new Dictionary<string, EscapePointConfig>
             {
                 {
                     "escape0", new EscapePointConfig
                     {
-                        EscapeRadius = 1000f
+                        EscapeRadius = 1000f,
+                        RoleConversions = new Dictionary<RoleType, PrettyCuffedConfig>
+                        {
+                            {
+                                RoleType.ClassD,
+                                new PrettyCuffedConfig
+                                    {CuffedRole = RoleType.NtfCadet, UnCuffedRole = RoleType.ChaosInsurgency}
+                            },
+                            {
+                                RoleType.Scientist,
+                                new PrettyCuffedConfig
+                                    {CuffedRole = RoleType.ChaosInsurgency, UnCuffedRole = RoleType.NtfScientist}
+                            }
+                        }
                     }
-                }
-            };
-
-        [Description(
-            "Self-explanatory. Wrong configs will lead to role changing to Scp173. " +
-            "You can pass None to not change role. " +
-            "Make sure you follow the example formatting or it *can* possibly break")]
-        public Dictionary<RoleType, PrettyCuffedConfig> RoleConversions { get; set; } =
-            new Dictionary<RoleType, PrettyCuffedConfig>
-            {
-                {
-                    RoleType.ClassD,
-                    new PrettyCuffedConfig
-                        {CuffedRole = RoleType.NtfCadet, UnCuffedRole = RoleType.ChaosInsurgency}
-                },
-                {
-                    RoleType.Scientist,
-                    new PrettyCuffedConfig {CuffedRole = RoleType.ChaosInsurgency, UnCuffedRole = RoleType.NtfScientist}
                 }
             };
 
@@ -68,7 +64,25 @@ namespace CustomEscape
     public class EscapePointConfig
     {
         [Description("How big will the escape zone be")]
-        public float EscapeRadius { get; set; } = 100f;
+        public float EscapeRadius { get; set; } = 1000f;
+
+        [Description(
+            "Self-explanatory. Wrong configs will lead to role changing to Scp173. " +
+            "You can pass None to not change role. " +
+            "Make sure you follow the example formatting or it *can* possibly break")]
+        public Dictionary<RoleType, PrettyCuffedConfig> RoleConversions { get; set; } =
+            new Dictionary<RoleType, PrettyCuffedConfig>
+            {
+                {
+                    RoleType.ClassD,
+                    new PrettyCuffedConfig
+                        {CuffedRole = RoleType.NtfCadet, UnCuffedRole = RoleType.ChaosInsurgency}
+                },
+                {
+                    RoleType.Scientist,
+                    new PrettyCuffedConfig {CuffedRole = RoleType.ChaosInsurgency, UnCuffedRole = RoleType.NtfScientist}
+                }
+            };
     }
 
     public class
