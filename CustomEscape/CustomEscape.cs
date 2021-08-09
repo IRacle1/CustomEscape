@@ -1,7 +1,6 @@
 ﻿using System;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using HarmonyLib;
 using Map = Exiled.Events.Handlers.Map;
 using Player = Exiled.Events.Handlers.Player;
 using Server = Exiled.Events.Handlers.Server;
