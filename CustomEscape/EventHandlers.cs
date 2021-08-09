@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Points;
-using Points.DataTypes;
 using Exiled.Events.EventArgs;
 using GameCore;
 using MEC;
+using Points.DataTypes;
 using Respawning;
 using UnityEngine;
 using Log = Exiled.API.Features.Log;
@@ -100,7 +99,8 @@ namespace CustomEscape
                 !(objValue is string sValue) ||
                 !CustomEscape.Singleton.Config.EscapePoints.TryGetValue(sValue, out var epc))
             {
-                Log.Debug("the escape is not performed by a custom collider or we don't have a role to change to", CustomEscape.Singleton.Config.Debug);
+                Log.Debug("the escape is not performed by a custom collider or we don't have a role to change to",
+                    CustomEscape.Singleton.Config.Debug);
                 ev.NewRole = RoleType.None;
                 return;
             }
