@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Lib.Harmony.2.0.4\lib\net472\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
@@ -42,45 +38,9 @@
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Exiled.API, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.API.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Exiled.Bootstrap, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Bootstrap.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Exiled.CreditTags, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.CreditTags.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Exiled.CustomItems, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.CustomItems.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Exiled.Events, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Events.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Exiled.Loader, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Loader.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Exiled.Permissions, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Permissions.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Updater.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Mirror">
       <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Points, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\0Points.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -113,7 +73,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Points\Points.csproj">
+      <Project>{ab7bddd8-5ff5-4b17-a0b3-cb572d7c9243}</Project>
+      <Name>Points</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EXILED" Version="2.11.1" />
+    <PackageReference Include="Lib.Harmony" Version="2.1.1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

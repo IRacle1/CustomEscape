@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using ArithFeather.Points;
-using ArithFeather.Points.DataTypes;
+using Points;
+using Points.DataTypes;
 using Exiled.Events.EventArgs;
 using GameCore;
 using MEC;
@@ -29,7 +29,7 @@ namespace CustomEscape
 
                 _escapePosDict.Clear();
 
-                _pointsPointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
+                _pointsPointList = Points.Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
                 _pointsPointList.FixData();
 
                 Log.Debug(

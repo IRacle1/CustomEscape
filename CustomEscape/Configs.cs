@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using ArithFeather.Points;
-using ArithFeather.Points.DataTypes;
-using ArithFeather.Points.Tools;
+using Points.DataTypes;
+using Points.Tools;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
@@ -47,7 +46,7 @@ namespace CustomEscape
 
         public void TryCreateFile()
         {
-            var pointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
+            var pointList = Points.Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
             if (FileManager.FileExists(Path.Combine(PointIO.FolderPath, PointsFileName) + ".txt"))
                 return;
             Log.Info("Creating new EscapePoint file using default spawn points.");
