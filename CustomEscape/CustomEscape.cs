@@ -13,23 +13,17 @@ namespace CustomEscape
     {
         public static CustomEscape Singleton;
 
-        private static Harmony _harmony;
-        public override string Author { get; } = "Remindme";
-        public override string Name { get; } = "Custom Escapes";
-        public override string Prefix { get; } = "bEscape";
-        public override Version Version { get; } = new Version(3, 0, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 10, 0);
-        public override PluginPriority Priority { get; } = PluginPriority.Highest;
+        public override string Author => "Remindme";
+        public override string Name => "Custom Escapes";
+        public override string Prefix => "bEscape";
+        public override PluginPriority Priority => PluginPriority.Highest;
+        public override Version RequiredExiledVersion { get; } = new Version(2, 11, 0);
 
         public override void OnEnabled()
         {
-            _harmony = new Harmony(Prefix + DateTime.Now.Ticks);
-
             Singleton = this;
 
             Config.TryCreateFile();
-
-            _harmony.PatchAll();
 
             Player.ChangingRole += EventHandlers.OnChangingRole;
             Player.Escaping += EventHandlers.OnEscaping;
@@ -47,9 +41,6 @@ namespace CustomEscape
             Map.Generated -= EventHandlers.OnGenerated;
 
             Singleton = null;
-
-            _harmony.UnpatchAll();
-            _harmony = null;
 
             base.OnDisabled();
         }

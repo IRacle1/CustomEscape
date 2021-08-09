@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using ArithFeather.Points;
 using ArithFeather.Points.DataTypes;
@@ -100,7 +100,7 @@ namespace CustomEscape
                 !(objValue is string sValue) ||
                 !CustomEscape.Singleton.Config.EscapePoints.TryGetValue(sValue, out var epc))
             {
-                Log.Debug("the escape is not performed by a custom collider or we don't have a role to change to");
+                Log.Debug("the escape is not performed by a custom collider or we don't have a role to change to", CustomEscape.Singleton.Config.Debug);
                 ev.NewRole = RoleType.None;
                 return;
             }
@@ -129,7 +129,7 @@ namespace CustomEscape
             Log.Debug($"RoleType is '{ev.NewRole}'", CustomEscape.Singleton.Config.Debug);
 
             ev.Player.SessionVariables[SessionVariable] = null;
-            Log.Debug($"set '{SessionVariable}' back to 'null'");
+            Log.Debug($"set '{SessionVariable}' back to 'null'", CustomEscape.Singleton.Config.Debug);
 
             if (!ev.IsAllowed) return;
             /*

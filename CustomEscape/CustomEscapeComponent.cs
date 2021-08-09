@@ -19,7 +19,7 @@ namespace CustomEscape
             }
 
             Log.Debug($"setting role: '{ply.Nickname}', '{ply.Role}', IsCuffed:'{ply.IsCuffed}'", Debug);
-            Log.Debug($"setting session variable '{EventHandlers.SessionVariable}': '{gameObject.name}'");
+            Log.Debug($"setting session variable '{EventHandlers.SessionVariable}': '{gameObject.name}'", Debug);
 
             ply.SessionVariables[EventHandlers.SessionVariable] = gameObject.name;
 
