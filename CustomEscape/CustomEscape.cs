@@ -15,7 +15,7 @@ namespace CustomEscape
         public override string Author => "Remindme";
         public override string Name => "Custom Escapes";
         public override string Prefix => "bEscape";
-        public override PluginPriority Priority => PluginPriority.Highest;
+        public override PluginPriority Priority => PluginPriority.Higher;
         public override Version Version { get; } = new Version(3, 1, 1);
         public override Version RequiredExiledVersion { get; } = new Version(2, 11, 1);
 
