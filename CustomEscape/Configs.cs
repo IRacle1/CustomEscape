@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.API.Interfaces;
-using Points.DataTypes;
-using Points.Tools;
-using UnityEngine;
-
-namespace CustomEscape
+﻿namespace CustomEscape
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using Exiled.API.Interfaces;
+    using Points;
+    using Points.DataTypes;
+    using Points.Tools;
+    using UnityEngine;
+
     public class Configs : IConfig
     {
         // who said nested?
@@ -25,12 +26,12 @@ namespace CustomEscape
                             {
                                 RoleType.ClassD,
                                 new PrettyCuffedConfig
-                                    {CuffedRole = RoleType.NtfCadet, UnCuffedRole = RoleType.ChaosInsurgency}
+                                    {CuffedRole = RoleType.NtfPrivate, UnCuffedRole = RoleType.ChaosConscript}
                             },
                             {
                                 RoleType.Scientist,
                                 new PrettyCuffedConfig
-                                    {CuffedRole = RoleType.ChaosInsurgency, UnCuffedRole = RoleType.NtfScientist}
+                                    {CuffedRole = RoleType.ChaosConscript, UnCuffedRole = RoleType.NtfSpecialist}
                             }
                         }
                     }
@@ -46,7 +47,7 @@ namespace CustomEscape
 
         public void TryCreateFile()
         {
-            var pointList = Points.Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
+            var pointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
             if (FileManager.FileExists(Path.Combine(PointIO.FolderPath, PointsFileName) + ".txt"))
                 return;
             Log.Info("Creating new EscapePoint file using default spawn points.");
@@ -75,11 +76,11 @@ namespace CustomEscape
                 {
                     RoleType.ClassD,
                     new PrettyCuffedConfig
-                        {CuffedRole = RoleType.NtfCadet, UnCuffedRole = RoleType.ChaosInsurgency}
+                        {CuffedRole = RoleType.NtfPrivate, UnCuffedRole = RoleType.ChaosConscript}
                 },
                 {
                     RoleType.Scientist,
-                    new PrettyCuffedConfig {CuffedRole = RoleType.ChaosInsurgency, UnCuffedRole = RoleType.NtfScientist}
+                    new PrettyCuffedConfig {CuffedRole = RoleType.ChaosConscript, UnCuffedRole = RoleType.NtfSpecialist}
                 }
             };
     }
@@ -87,7 +88,7 @@ namespace CustomEscape
     public class
         PrettyCuffedConfig // Because of this there will be "cuffed_role" and "un_cuffed_role" config entries instead of just dictionaries
     {
-        public RoleType CuffedRole { get; set; } = RoleType.ChaosInsurgency;
-        public RoleType UnCuffedRole { get; set; } = RoleType.NtfCadet;
+        public RoleType CuffedRole { get; set; } = RoleType.ChaosConscript;
+        public RoleType UnCuffedRole { get; set; } = RoleType.NtfPrivate;
     }
 }

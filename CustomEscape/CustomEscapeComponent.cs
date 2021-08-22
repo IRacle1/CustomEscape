@@ -1,9 +1,10 @@
-﻿using Exiled.API.Features;
-using MEC;
-using UnityEngine;
-
-namespace CustomEscape
+﻿namespace CustomEscape
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using MEC;
+    using UnityEngine;
+
     public class CustomEscapeComponent : MonoBehaviour
     {
         private bool Debug { get; } = CustomEscape.Singleton.Config.Debug;
@@ -23,7 +24,7 @@ namespace CustomEscape
 
             ply.SessionVariables[EventHandlers.SessionVariable] = gameObject.name;
 
-            Timing.CallDelayed(0.01f, () => ply.SetRole(ply.Role, false, true));
+            Timing.CallDelayed(0.01f, () => ply.SetRole(ply.Role, SpawnReason.Escaped));
         }
     }
 }

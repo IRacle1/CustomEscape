@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Points, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="0Points, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\lib\0Points.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
@@ -76,7 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILED" Version="2.11.1" />
+    <PackageReference Include="EXILED" Version="3.0.0-alpha.50" />
     <PackageReference Include="Lib.Harmony" Version="2.1.1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

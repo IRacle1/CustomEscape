@@ -1,15 +1,19 @@
-using System.Collections.Generic;
-using System.Linq;
-using Exiled.Events.EventArgs;
-using GameCore;
-using MEC;
-using Points.DataTypes;
-using Respawning;
-using UnityEngine;
-using Log = Exiled.API.Features.Log;
-
 namespace CustomEscape
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using Exiled.Events.EventArgs;
+    using GameCore;
+    using InventorySystem.Configs;
+    using MEC;
+    using Points;
+    using Points.DataTypes;
+    using Respawning;
+    using UnityEngine;
+    using Log = Exiled.API.Features.Log;
+
     public static class EventHandlers
     {
         public const string SessionVariable = "plugin_escaping_collider_name";
@@ -28,7 +32,7 @@ namespace CustomEscape
 
                 _escapePosDict.Clear();
 
-                _pointsPointList = Points.Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
+                _pointsPointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
                 _pointsPointList.FixData();
 
                 Log.Debug(
@@ -94,7 +98,7 @@ namespace CustomEscape
 
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (!ev.IsEscaped) return;
+            if (ev.Reason != SpawnReason.Escaped) return;
             if (!ev.Player.SessionVariables.TryGetValue(SessionVariable, out var objValue) ||
                 !(objValue is string sValue) ||
                 !CustomEscape.Singleton.Config.EscapePoints.TryGetValue(sValue, out var epc))
@@ -121,7 +125,10 @@ namespace CustomEscape
 
             // Because SetRole() is called with Player's current role, the items thing is not handled properly and the inventory is changed here, so exiled can change the inventory itself
             ev.Items.Clear();
-            ev.Items.AddRange(ev.Player.ReferenceHub.characterClassManager.Classes.SafeGet(ev.NewRole).startItems);
+            ev.Items.AddRange(StartingInventories.DefinedInventories.ContainsKey(ev.NewRole)
+                ? StartingInventories.DefinedInventories[ev.NewRole].Items.Select(x => (ItemType) x)
+                : new List<ItemType>());
+            // ev.Items.AddRange(ev.Player.ReferenceHub.characterClassManager.Classes.SafeGet(ev.NewRole).startItems);
         }
 
         public static void OnEscaping(EscapingEventArgs ev)
@@ -145,7 +152,7 @@ namespace CustomEscape
                     return;
                 case RoleType.Spectator:
                     Timing.CallDelayed(0.1f,
-                        () => ev.Player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(ev.Player.Role));
+                        () => ev.Player.Position = ev.Player.Role.GetRandomSpawnProperties().Item1);
                     Log.Debug($"so we're moving spectator out of the way: {ev.Player.Nickname}",
                         CustomEscape.Singleton.Config.Debug);
                     break;
