@@ -5,7 +5,7 @@
     using Exiled.API.Features;
     using Exiled.Events;
     using HarmonyLib;
-    using Map = Exiled.Events.Handlers.Map;
+    using Points;
     using Server = Exiled.Events.Handlers.Server;
 
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -45,7 +45,7 @@
             Config.TryCreateFile();
 
             Server.RoundEnded += EventHandlers.OnRoundEnded;
-            Map.Generated += EventHandlers.OnGenerated;
+            Points.OnLoadSpawnPoints += EventHandlers.OnLoadSpawnPoints;
 
             base.OnEnabled();
         }
@@ -53,7 +53,7 @@
         public override void OnDisabled()
         {
             Server.RoundEnded -= EventHandlers.OnRoundEnded;
-            Map.Generated -= EventHandlers.OnGenerated;
+            Points.OnLoadSpawnPoints -= EventHandlers.OnLoadSpawnPoints;
 
             Harmony.UnpatchAll();
             Singleton = null;

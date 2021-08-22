@@ -52,44 +52,28 @@ namespace CustomEscape.Patches
                 case Team.RSC:
                     if (cuffed)
                     {
-                        // __instance.SetPlayersClass(RoleType.ChaosConscript, __instance.gameObject,
-                        //     CharacterClassManager.SpawnReason.Escaped);
                         ++RoundSummary.escaped_ds;
                         singleton.GrantTickets(SpawnableTeamType.ChaosInsurgency,
                             ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_scientist_cuffed_count", 2));
-                        // __instance.GetComponent<Escape>()
-                        //     .TargetShowEscapeMessage(__instance.connectionToClient, false, true);
                         break;
                     }
 
-                    // __instance.SetPlayersClass(RoleType.NtfSpecialist, __instance.gameObject,
-                    //     CharacterClassManager.SpawnReason.Escaped);
                     ++RoundSummary.escaped_scientists;
                     singleton.GrantTickets(SpawnableTeamType.NineTailedFox,
                         ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_scientist_count", 1));
-                    // __instance.GetComponent<Escape>()
-                    //     .TargetShowEscapeMessage(__instance.connectionToClient, false, false);
                     break;
                 case Team.CDP:
                     if (cuffed)
                     {
-                        // __instance.SetPlayersClass(RoleType.NtfPrivate, __instance.gameObject,
-                        //     CharacterClassManager.SpawnReason.Escaped);
                         ++RoundSummary.escaped_scientists;
                         singleton.GrantTickets(SpawnableTeamType.NineTailedFox,
                             ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_classd_cuffed_count", 1));
-                        // __instance.GetComponent<Escape>()
-                        //     .TargetShowEscapeMessage(__instance.connectionToClient, true, true);
                         break;
                     }
 
-                    // __instance.SetPlayersClass(RoleType.ChaosConscript, __instance.gameObject,
-                    //     CharacterClassManager.SpawnReason.Escaped);
                     ++RoundSummary.escaped_ds;
                     singleton.GrantTickets(SpawnableTeamType.ChaosInsurgency,
                         ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_classd_count", 1));
-                    // __instance.GetComponent<Escape>()
-                    //     .TargetShowEscapeMessage(__instance.connectionToClient, true, false);
                     break;
             }
 

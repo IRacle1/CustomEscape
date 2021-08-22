@@ -19,7 +19,7 @@ namespace CustomEscape
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private static Dictionary<string, GameObject> _escapePosDict = new Dictionary<string, GameObject>();
 
-        public static void OnGenerated()
+        public static void OnLoadSpawnPoints()
         {
             Timing.CallDelayed(.5f, () =>
             {
@@ -100,16 +100,16 @@ namespace CustomEscape
             {
                 Log.Debug("the escape is not performed by a custom collider or we don't have a role to change to",
                     CustomEscape.Singleton.Config.Debug);
-                ev.NewRole = RoleType.None;
+                ev.IsAllowed = false;
                 return;
             }
 
-            Log.Debug($"got session variable and escape point config: '{sValue}'");
+            Log.Debug($"got session variable and escape point config: '{sValue}'", CustomEscape.Singleton.Config.Debug);
 
             if (!epc.RoleConversions.TryGetValue(ev.Player.Role,
                 out var pcc))
             {
-                ev.NewRole = RoleType.None;
+                ev.IsAllowed = false;
                 return;
             }
 
