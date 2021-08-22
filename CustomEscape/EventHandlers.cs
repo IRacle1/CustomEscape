@@ -2,17 +2,13 @@ namespace CustomEscape
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using GameCore;
-    using InventorySystem.Configs;
     using MEC;
     using Points;
     using Points.DataTypes;
-    using Respawning;
     using UnityEngine;
-    using Log = Exiled.API.Features.Log;
 
     public static class EventHandlers
     {
@@ -96,9 +92,8 @@ namespace CustomEscape
             _escapePosDict.Clear();
         }
 
-        public static void OnChangingRole(ChangingRoleEventArgs ev)
+        public static void OnEscaping(EscapingEventArgs ev)
         {
-            if (ev.Reason != SpawnReason.Escaped) return;
             if (!ev.Player.SessionVariables.TryGetValue(SessionVariable, out var objValue) ||
                 !(objValue is string sValue) ||
                 !CustomEscape.Singleton.Config.EscapePoints.TryGetValue(sValue, out var epc))
@@ -118,79 +113,26 @@ namespace CustomEscape
                 return;
             }
 
+            ev.Player.SessionVariables[SessionVariable] = null;
+            Log.Debug($"set '{SessionVariable}' back to 'null'", CustomEscape.Singleton.Config.Debug);
+
             var role = ev.Player.IsCuffed ? pcc.CuffedRole : pcc.UnCuffedRole;
             Log.Debug($"changing role: '{ev.Player.Role}' to '{role}', cuffed: '{ev.Player.IsCuffed}'",
                 CustomEscape.Singleton.Config.Debug);
             ev.NewRole = role;
 
-            // Because SetRole() is called with Player's current role, the items thing is not handled properly and the inventory is changed here, so exiled can change the inventory itself
-            ev.Items.Clear();
-            ev.Items.AddRange(StartingInventories.DefinedInventories.ContainsKey(ev.NewRole)
-                ? StartingInventories.DefinedInventories[ev.NewRole].Items.Select(x => (ItemType) x)
-                : new List<ItemType>());
-            // ev.Items.AddRange(ev.Player.ReferenceHub.characterClassManager.Classes.SafeGet(ev.NewRole).startItems);
-        }
-
-        public static void OnEscaping(EscapingEventArgs ev)
-        {
-            Log.Debug($"RoleType is '{ev.NewRole}'", CustomEscape.Singleton.Config.Debug);
-
-            ev.Player.SessionVariables[SessionVariable] = null;
-            Log.Debug($"set '{SessionVariable}' back to 'null'", CustomEscape.Singleton.Config.Debug);
-
-            if (!ev.IsAllowed) return;
-            /*
-             * Those checks are here and not in OnChangingRole() because
-             * 1. I need the IsAllowed property which is not present in ChangingRole
-             * 2. Other plugins can override the NewRole and it will affect the logic
-             */
             switch (ev.NewRole)
             {
                 case RoleType.None:
                     ev.IsAllowed = false;
-                    Log.Debug("so we're not allowing the escape", CustomEscape.Singleton.Config.Debug);
-                    return;
+                    Log.Debug("role is None, so we're not allowing the escape", CustomEscape.Singleton.Config.Debug);
+                    break;
                 case RoleType.Spectator:
                     Timing.CallDelayed(0.1f,
                         () => ev.Player.Position = ev.Player.Role.GetRandomSpawnProperties().Item1);
-                    Log.Debug($"so we're moving spectator out of the way: {ev.Player.Nickname}",
+                    Log.Debug($"role is Spectator, so we're moving them out of the way: {ev.Player.Nickname}",
                         CustomEscape.Singleton.Config.Debug);
                     break;
-            }
-
-            if (ev.Player.Team == Team.CDP)
-            {
-                if (ev.Player.IsCuffed)
-                {
-                    RoundSummary.escaped_scientists++;
-                    RespawnTickets.Singleton.GrantTickets(SpawnableTeamType.NineTailedFox,
-                        ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_classd_cuffed_count", 1));
-                    Log.Debug("so we're adding tickets to NTF", CustomEscape.Singleton.Config.Debug);
-                }
-                else
-                {
-                    RoundSummary.escaped_ds++;
-                    RespawnTickets.Singleton.GrantTickets(SpawnableTeamType.ChaosInsurgency,
-                        ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_classd_count", 1));
-                    Log.Debug("so we're adding tickets to CI", CustomEscape.Singleton.Config.Debug);
-                }
-            }
-            else if (ev.Player.Team == Team.RSC)
-            {
-                if (ev.Player.IsCuffed)
-                {
-                    RoundSummary.escaped_ds++;
-                    RespawnTickets.Singleton.GrantTickets(SpawnableTeamType.ChaosInsurgency,
-                        ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_scientist_cuffed_count", 2));
-                    Log.Debug("so we're adding tickets to CI", CustomEscape.Singleton.Config.Debug);
-                }
-                else
-                {
-                    RoundSummary.escaped_scientists++;
-                    RespawnTickets.Singleton.GrantTickets(SpawnableTeamType.NineTailedFox,
-                        ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_scientist_count", 1));
-                    Log.Debug("so we're adding tickets to NTF", CustomEscape.Singleton.Config.Debug);
-                }
             }
         }
     }

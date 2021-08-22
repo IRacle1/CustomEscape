@@ -1,6 +1,5 @@
 ﻿namespace CustomEscape
 {
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using MEC;
     using UnityEngine;
@@ -8,6 +7,7 @@
     public class CustomEscapeComponent : MonoBehaviour
     {
         private bool Debug { get; } = CustomEscape.Singleton.Config.Debug;
+        private string SessionVariable { get; } = EventHandlers.SessionVariable;
 
         public void OnTriggerEnter(Collider col)
         {
@@ -22,9 +22,9 @@
             Log.Debug($"setting role: '{ply.Nickname}', '{ply.Role}', IsCuffed:'{ply.IsCuffed}'", Debug);
             Log.Debug($"setting session variable '{EventHandlers.SessionVariable}': '{gameObject.name}'", Debug);
 
-            ply.SessionVariables[EventHandlers.SessionVariable] = gameObject.name;
+            ply.SessionVariables[SessionVariable] = gameObject.name;
 
-            Timing.CallDelayed(0.01f, () => ply.SetRole(ply.Role, SpawnReason.Escaped));
+            Timing.CallDelayed(0.01f, () => ply.ReferenceHub.characterClassManager.UserCode_CmdRegisterEscape());
         }
     }
 }

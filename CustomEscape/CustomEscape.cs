@@ -3,8 +3,9 @@
     using System;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Events;
+    using HarmonyLib;
     using Map = Exiled.Events.Handlers.Map;
-    using Player = Exiled.Events.Handlers.Player;
     using Server = Exiled.Events.Handlers.Server;
 
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -19,14 +20,30 @@
         public override Version Version { get; } = new Version(3, 2, 0);
         public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
 
+        private Harmony Harmony { get; set; }
+
         public override void OnEnabled()
         {
             Singleton = this;
+            Harmony = new Harmony($"com.remindme.ce-{DateTime.Now.Ticks}");
+
+            try
+            {
+                foreach (var method in Events.Instance.Harmony.GetPatchedMethods())
+                    if (method.DeclaringType != null && method.Name == "UserCode_CmdRegisterEscape")
+                        Events.DisabledPatchesHashSet.Add(method);
+
+                Events.Instance.ReloadDisabledPatches();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Exiled broke: {e}");
+            }
+
+            Harmony.PatchAll();
 
             Config.TryCreateFile();
 
-            Player.ChangingRole += EventHandlers.OnChangingRole;
-            Player.Escaping += EventHandlers.OnEscaping;
             Server.RoundEnded += EventHandlers.OnRoundEnded;
             Map.Generated += EventHandlers.OnGenerated;
 
@@ -35,11 +52,10 @@
 
         public override void OnDisabled()
         {
-            Player.ChangingRole -= EventHandlers.OnChangingRole;
-            Player.Escaping -= EventHandlers.OnEscaping;
             Server.RoundEnded -= EventHandlers.OnRoundEnded;
             Map.Generated -= EventHandlers.OnGenerated;
 
+            Harmony.UnpatchAll();
             Singleton = null;
 
             base.OnDisabled();

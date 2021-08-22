@@ -73,10 +73,11 @@
     <Compile Include="CustomEscape.cs" />
     <Compile Include="CustomEscapeComponent.cs" />
     <Compile Include="EventHandlers.cs" />
+    <Compile Include="Patches\Escaping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILED" Version="3.0.0-alpha.50" />
+    <PackageReference Include="EXILED" Version="3.0.0-alpha.51" />
     <PackageReference Include="Lib.Harmony" Version="2.1.1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
