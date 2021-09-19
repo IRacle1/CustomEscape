@@ -45,7 +45,7 @@
             Config.TryCreateFile();
 
             Server.RoundEnded += EventHandlers.OnRoundEnded;
-            Points.OnLoadSpawnPoints += EventHandlers.OnLoadSpawnPoints;
+            Points.LoadedSpawnPoints += EventHandlers.OnLoadedSpawnPoints;
 
             base.OnEnabled();
         }
@@ -53,7 +53,7 @@
         public override void OnDisabled()
         {
             Server.RoundEnded -= EventHandlers.OnRoundEnded;
-            Points.OnLoadSpawnPoints -= EventHandlers.OnLoadSpawnPoints;
+            Points.LoadedSpawnPoints -= EventHandlers.OnLoadedSpawnPoints;
 
             Harmony.UnpatchAll();
             Singleton = null;

@@ -19,8 +19,9 @@ namespace CustomEscape
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private static Dictionary<string, GameObject> _escapePosDict = new Dictionary<string, GameObject>();
 
-        public static void OnLoadSpawnPoints()
+        public static void OnLoadedSpawnPoints()
         {
+            Log.Debug("OnLoadedSpawnPoints", CustomEscape.Singleton.Config.Debug);
             Timing.CallDelayed(.5f, () =>
             {
                 foreach (var kvp in _escapePosDict)
