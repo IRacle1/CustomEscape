@@ -12,9 +12,10 @@ namespace CustomEscape.Patches
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.UserCode_CmdRegisterEscape))]
     internal static class Escaping
     {
+        [HarmonyPrefix]
         private static bool Prefix(CharacterClassManager __instance)
         {
-            var ev = new EscapingEventArgs(Player.Get(__instance._hub));
+            var ev = new ExtendedEscapingEventArgs(Player.Get(__instance._hub));
             EventHandlers.OnEscaping(ev); // i can do that now, neato
             Exiled.Events.Handlers.Player.OnEscaping(ev);
 
@@ -23,7 +24,7 @@ namespace CustomEscape.Patches
 
             var cuffed = false;
             foreach (var entry in DisarmedPlayers.Entries.Where(entry =>
-                (int) entry.DisarmedPlayer == (int) __instance._hub.networkIdentity.netId))
+                (int)entry.DisarmedPlayer == (int)__instance._hub.networkIdentity.netId))
             {
                 if (entry.Disarmer == 0U)
                 {
@@ -52,34 +53,45 @@ namespace CustomEscape.Patches
                 case Team.RSC:
                     if (cuffed)
                     {
-                        ++RoundSummary.escaped_ds;
+                        ++RoundSummary.EscapedClassD;
                         singleton.GrantTickets(SpawnableTeamType.ChaosInsurgency,
                             ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_scientist_cuffed_count", 2));
                         break;
                     }
 
-                    ++RoundSummary.escaped_scientists;
+                    ++RoundSummary.EscapedScientists;
                     singleton.GrantTickets(SpawnableTeamType.NineTailedFox,
                         ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_scientist_count", 1));
                     break;
                 case Team.CDP:
                     if (cuffed)
                     {
-                        ++RoundSummary.escaped_scientists;
+                        ++RoundSummary.EscapedScientists;
                         singleton.GrantTickets(SpawnableTeamType.NineTailedFox,
                             ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_classd_cuffed_count", 1));
                         break;
                     }
 
-                    ++RoundSummary.escaped_ds;
+                    ++RoundSummary.EscapedClassD;
                     singleton.GrantTickets(SpawnableTeamType.ChaosInsurgency,
                         ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_classd_count", 1));
                     break;
             }
 
+            if (ev.ClearInventory)
+                ev.Player.ClearInventory();
             ev.Player.SetRole(ev.NewRole, SpawnReason.Escaped);
 
             return false;
         }
+    }
+
+    public class ExtendedEscapingEventArgs : EscapingEventArgs
+    {
+        public ExtendedEscapingEventArgs(Player player) : base(player)
+        {
+        }
+
+        public bool ClearInventory { get; set; }
     }
 }

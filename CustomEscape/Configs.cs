@@ -26,12 +26,12 @@
                             {
                                 RoleType.ClassD,
                                 new PrettyCuffedConfig
-                                    {CuffedRole = RoleType.NtfPrivate, UnCuffedRole = RoleType.ChaosConscript}
+                                    { CuffedRole = RoleType.NtfPrivate, UnCuffedRole = RoleType.ChaosConscript }
                             },
                             {
                                 RoleType.Scientist,
                                 new PrettyCuffedConfig
-                                    {CuffedRole = RoleType.ChaosConscript, UnCuffedRole = RoleType.NtfSpecialist}
+                                    { CuffedRole = RoleType.ChaosConscript, UnCuffedRole = RoleType.NtfSpecialist }
                             }
                         }
                     }
@@ -76,11 +76,12 @@
                 {
                     RoleType.ClassD,
                     new PrettyCuffedConfig
-                        {CuffedRole = RoleType.NtfPrivate, UnCuffedRole = RoleType.ChaosConscript}
+                        { CuffedRole = RoleType.NtfPrivate, UnCuffedRole = RoleType.ChaosConscript }
                 },
                 {
                     RoleType.Scientist,
-                    new PrettyCuffedConfig {CuffedRole = RoleType.ChaosConscript, UnCuffedRole = RoleType.NtfSpecialist}
+                    new PrettyCuffedConfig
+                        { CuffedRole = RoleType.ChaosConscript, UnCuffedRole = RoleType.NtfSpecialist }
                 }
             };
     }
@@ -89,6 +90,13 @@
         PrettyCuffedConfig // Because of this there will be "cuffed_role" and "un_cuffed_role" config entries instead of just dictionaries
     {
         public RoleType CuffedRole { get; set; } = RoleType.ChaosConscript;
+
+        [Description("Should the player lose their inventory while escaping")]
+        public bool CuffedClearInventory { get; set; } = false;
+
         public RoleType UnCuffedRole { get; set; } = RoleType.NtfPrivate;
+
+        [Description("Should the player lose their inventory while escaping")]
+        public bool UnCuffedClearInventory { get; set; } = false;
     }
 }

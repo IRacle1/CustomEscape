@@ -6,6 +6,7 @@ namespace CustomEscape
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using MEC;
+    using Patches;
     using Points;
     using Points.DataTypes;
     using UnityEngine;
@@ -93,7 +94,7 @@ namespace CustomEscape
             _escapePosDict.Clear();
         }
 
-        public static void OnEscaping(EscapingEventArgs ev)
+        public static void OnEscaping(ExtendedEscapingEventArgs ev)
         {
             if (!ev.Player.SessionVariables.TryGetValue(SessionVariable, out var objValue) ||
                 !(objValue is string sValue) ||
@@ -118,6 +119,7 @@ namespace CustomEscape
             Log.Debug($"set '{SessionVariable}' back to 'null'", CustomEscape.Singleton.Config.Debug);
 
             var role = ev.Player.IsCuffed ? pcc.CuffedRole : pcc.UnCuffedRole;
+            ev.ClearInventory = ev.Player.IsCuffed ? pcc.CuffedClearInventory : pcc.UnCuffedClearInventory;
             Log.Debug($"changing role: '{ev.Player.Role}' to '{role}', cuffed: '{ev.Player.IsCuffed}'",
                 CustomEscape.Singleton.Config.Debug);
             ev.NewRole = role;
