@@ -37,10 +37,14 @@ bEscape:
          role_conversions:
             ClassD:
                cuffed_role: NtfPrivate
+               cuffed_clear_inventory: false
                un_cuffed_role: ChaosConscript
+               un_cuffed_clear_inventory: false
             Scientist:
                cuffed_role: ChaosConscript
+               cuffed_clear_inventory: false
                un_cuffed_role: NtfSpecialist
+               un_cuffed_clear_inventory: false
    # Points file. It contains all escape positions in the form of IDs and raw XYZ data
    points_file_name: EscapePoints
    debug: false
