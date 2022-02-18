@@ -1,11 +1,16 @@
 ﻿namespace CustomEscape
 {
     using System;
+    using System.Reflection;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events;
+
     using HarmonyLib;
+
     using Points;
+
     using Server = Exiled.Events.Handlers.Server;
 
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -29,7 +34,7 @@
 
             try
             {
-                foreach (var method in Events.Instance.Harmony.GetPatchedMethods())
+                foreach (MethodBase method in Events.Instance.Harmony.GetPatchedMethods())
                     if (method.DeclaringType != null && method.Name == "UserCode_CmdRegisterEscape")
                         Events.DisabledPatchesHashSet.Add(method);
 

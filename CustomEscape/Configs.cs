@@ -3,12 +3,15 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
+
     using Points;
     using Points.DataTypes;
     using Points.Tools;
+
     using UnityEngine;
 
     public class Configs : IConfig
@@ -32,10 +35,10 @@
                                 RoleType.Scientist,
                                 new PrettyCuffedConfig
                                     { CuffedRole = RoleType.ChaosConscript, UnCuffedRole = RoleType.NtfSpecialist }
-                            }
-                        }
+                            },
+                        },
                     }
-                }
+                },
             };
 
 
@@ -47,7 +50,7 @@
 
         public void TryCreateFile()
         {
-            var pointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
+            PointList pointList = Points.GetPointList(CustomEscape.Singleton.Config.PointsFileName);
             if (FileManager.FileExists(Path.Combine(PointIO.FolderPath, PointsFileName) + ".txt"))
                 return;
             Log.Info("Creating new EscapePoint file using default spawn points.");
@@ -82,7 +85,7 @@
                     RoleType.Scientist,
                     new PrettyCuffedConfig
                         { CuffedRole = RoleType.ChaosConscript, UnCuffedRole = RoleType.NtfSpecialist }
-                }
+                },
             };
     }
 

@@ -1,12 +1,17 @@
 namespace CustomEscape.Patches
 {
     using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+
     using GameCore;
+
     using HarmonyLib;
+
     using InventorySystem.Disarming;
+
     using Respawning;
 
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.UserCode_CmdRegisterEscape))]
@@ -23,8 +28,8 @@ namespace CustomEscape.Patches
                 return false;
 
             var cuffed = false;
-            foreach (var entry in DisarmedPlayers.Entries.Where(entry =>
-                (int)entry.DisarmedPlayer == (int)__instance._hub.networkIdentity.netId))
+            foreach (DisarmedPlayers.DisarmedEntry entry in DisarmedPlayers.Entries.Where(entry =>
+                entry.DisarmedPlayer == __instance._hub.networkIdentity.netId))
             {
                 if (entry.Disarmer == 0U)
                 {
@@ -32,9 +37,9 @@ namespace CustomEscape.Patches
                     break;
                 }
 
-                if (ReferenceHub.TryGetHubNetID(entry.Disarmer, out var hub))
+                if (ReferenceHub.TryGetHubNetID(entry.Disarmer, out ReferenceHub hub))
                 {
-                    var characterClassManager = hub.characterClassManager;
+                    CharacterClassManager characterClassManager = hub.characterClassManager;
                     if (__instance.CurClass == RoleType.Scientist &&
                         characterClassManager.Faction == Faction.FoundationEnemy ||
                         __instance.CurClass == RoleType.ClassD &&
@@ -47,7 +52,7 @@ namespace CustomEscape.Patches
                 }
             }
 
-            var singleton = RespawnTickets.Singleton;
+            RespawnTickets singleton = RespawnTickets.Singleton;
             switch (__instance.CurRole.team)
             {
                 case Team.RSC:

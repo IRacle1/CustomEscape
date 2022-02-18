@@ -1,6 +1,7 @@
 ﻿namespace CustomEscape
 {
     using Exiled.API.Features;
+
     using UnityEngine;
 
     public class CustomEscapeComponent : MonoBehaviour
@@ -11,7 +12,7 @@
         public void OnTriggerEnter(Collider col)
         {
             Log.Debug("triggered", Debug);
-            var ply = Player.Get(col.gameObject);
+            Player ply = Player.Get(col.gameObject);
             if (ply == null)
             {
                 Log.Debug("it wasn't a player");
