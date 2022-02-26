@@ -42,7 +42,7 @@ namespace CustomEscape.Patches
                     CharacterClassManager characterClassManager = hub.characterClassManager;
                     if (__instance.Faction == Faction.FoundationStaff &&
                         characterClassManager.Faction == Faction.FoundationEnemy ||
-                        __instance.Faction == Faction.FoundationStaff &&
+                        __instance.Faction == Faction.FoundationEnemy &&
                         characterClassManager.Faction == Faction.FoundationStaff)
                         cuffed = true;
                 }
