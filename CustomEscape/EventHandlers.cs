@@ -135,12 +135,6 @@ namespace CustomEscape
                     ev.IsAllowed = false;
                     Log.Debug("role is None, so we're not allowing the escape", CustomEscape.Singleton.Config.Debug);
                     break;
-                case RoleType.Spectator:
-                    Timing.CallDelayed(0.1f,
-                        () => ev.Player.Position = ev.Player.Role.Type.GetRandomSpawnProperties().Item1);
-                    Log.Debug($"role is Spectator, so we're moving them out of the way: {ev.Player.Nickname}",
-                        CustomEscape.Singleton.Config.Debug);
-                    break;
             }
         }
     }

@@ -40,9 +40,9 @@ namespace CustomEscape.Patches
                 if (ReferenceHub.TryGetHubNetID(entry.Disarmer, out ReferenceHub hub))
                 {
                     CharacterClassManager characterClassManager = hub.characterClassManager;
-                    if (__instance.CurClass == RoleType.Scientist &&
+                    if (__instance.Faction == Faction.FoundationStaff &&
                         characterClassManager.Faction == Faction.FoundationEnemy ||
-                        __instance.CurClass == RoleType.ClassD &&
+                        __instance.Faction == Faction.FoundationEnemy &&
                         characterClassManager.Faction == Faction.FoundationStaff)
                         cuffed = true;
                 }
@@ -61,12 +61,14 @@ namespace CustomEscape.Patches
                         ++RoundSummary.EscapedClassD;
                         singleton.GrantTickets(SpawnableTeamType.ChaosInsurgency,
                             ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_scientist_cuffed_count", 2));
+                        __instance.GetComponent<Escape>().TargetShowEscapeMessage(__instance.connectionToClient, isClassD: false, changeTeam: true);
                         break;
                     }
 
                     ++RoundSummary.EscapedScientists;
                     singleton.GrantTickets(SpawnableTeamType.NineTailedFox,
                         ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_scientist_count", 1));
+                    __instance.GetComponent<Escape>().TargetShowEscapeMessage(__instance.connectionToClient, isClassD: false, changeTeam: false);
                     break;
                 case Team.CDP:
                     if (cuffed)
@@ -74,12 +76,15 @@ namespace CustomEscape.Patches
                         ++RoundSummary.EscapedScientists;
                         singleton.GrantTickets(SpawnableTeamType.NineTailedFox,
                             ConfigFile.ServerConfig.GetInt("respawn_tickets_mtf_classd_cuffed_count", 1));
+                        __instance.GetComponent<Escape>().TargetShowEscapeMessage(__instance.connectionToClient, isClassD: true, changeTeam: true);
+
                         break;
                     }
 
                     ++RoundSummary.EscapedClassD;
                     singleton.GrantTickets(SpawnableTeamType.ChaosInsurgency,
                         ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_classd_count", 1));
+                    __instance.GetComponent<Escape>().TargetShowEscapeMessage(__instance.connectionToClient, isClassD: true, changeTeam: false);
                     break;
             }
 

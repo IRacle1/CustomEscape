@@ -21,9 +21,8 @@
         public override string Author => "Remindme";
         public override string Name => "Custom Escapes";
         public override string Prefix => "bEscape";
-        public override PluginPriority Priority => PluginPriority.Higher;
-        public override Version Version { get; } = new Version(3, 2, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
+        public override Version Version { get; } = new Version(3, 3, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(5, 0, 0);
 
         private Harmony Harmony { get; set; }
 
